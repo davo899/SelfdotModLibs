@@ -29,12 +29,12 @@ public class MIDIPlayer {
 		for (List<MIDIEvent> track : midi.tracks) {
 			Track trackObj = new Track(track);
 			
-			trackObj.timer += trackObj.events.get(trackObj.events.size()-1).time;
+			trackObj.timer += trackObj.events.get(trackObj.events.size() - 1).time;
 			tracks.add(trackObj);
 		}
 	}
 	
-	public boolean tick() {
+	public boolean tick(double timeFactor) {
 		boolean ended = true;
         for (Track track : tracks) {
             while (track.timer <= 0) {
@@ -42,7 +42,7 @@ public class MIDIPlayer {
 
                 MIDIEvent event = track.events.remove(track.events.size()-1);
                 track.events.add(0, event);
-                track.timer += track.events.get(track.events.size() - 1).time;
+                track.timer += track.events.get(track.events.size() - 1).time / timeFactor;
 
                 if (event.type.equals("Note On")) {
                     NoteOnEvent noteOnEvent = (NoteOnEvent) event;
@@ -119,5 +119,9 @@ public class MIDIPlayer {
         }
 		return ended;
 	}
+
+    public boolean tick() {
+        return tick(1d);
+    }
 
 }
