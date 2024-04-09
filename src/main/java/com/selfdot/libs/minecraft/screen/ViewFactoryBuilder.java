@@ -48,12 +48,31 @@ public class ViewFactoryBuilder<T extends Menu<T>> {
                 int i = 0; i < Math.min(ELEMENTS_PER_PAGE, elements.size() - (menu.getPage() * ELEMENTS_PER_PAGE)); i++
             ) {
                 U element = elements.get((menu.getPage() * ELEMENTS_PER_PAGE) + i);
-                components.add(
-                    new ComponentBuilder<T>(
-                        (i % ELEMENTS_PER_ROW) + 1, (i / ELEMENTS_PER_ROW) + 1, iconFactory.apply(element)
-                    ).withAction(menu_ -> onElementClick.accept(menu_, element)).build()
-                );
+                components.add(new ComponentBuilder<T>(
+                    (i % ELEMENTS_PER_ROW) + 1, (i / ELEMENTS_PER_ROW) + 1, iconFactory.apply(element)
+                ).withAction(menu_ -> onElementClick.accept(menu_, element)).build());
             }
+
+            components.add(new ComponentBuilder<T>(1, 4, Items.SPECTRAL_ARROW)
+                .withName("Previous Previous Page")
+                .withAction(menu_ -> menu_.movePage(-2, elements.size()))
+                .build()
+            );
+            components.add(new ComponentBuilder<T>(7, 4, Items.SPECTRAL_ARROW)
+                .withName("Next Next Page")
+                .withAction(menu_ -> menu_.movePage(2, elements.size()))
+                .build()
+            );
+            components.add(new ComponentBuilder<T>(2, 4, Items.ARROW)
+                .withName("Previous Page")
+                .withAction(menu_ -> menu_.movePage(-1, elements.size()))
+                .build()
+            );
+            components.add(new ComponentBuilder<T>(6, 4, Items.ARROW)
+                .withName("Next Page")
+                .withAction(menu_ -> menu_.movePage(1, elements.size()))
+                .build()
+            );
             return build().create(menu);
         };
     }
