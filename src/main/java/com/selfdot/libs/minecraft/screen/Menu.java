@@ -24,6 +24,7 @@ public abstract class Menu<T extends Menu<T>> {
     private final Inventory inventory;
     private final Map<String, ViewFactory<T>> viewFactories = new HashMap<>();
 
+    private String view;
     private final List<Component<T>> components = new ArrayList<>();
     private int page = 0;
 
@@ -91,6 +92,7 @@ public abstract class Menu<T extends Menu<T>> {
     }
 
     public void navigate(String nextView) {
+        view = nextView;
         components.clear();
         for (int i = 0; i < inventory.size(); i++) inventory.setStack(i, new ItemStack(Items.GRAY_STAINED_GLASS_PANE));
         if (isBordered) {
@@ -122,6 +124,7 @@ public abstract class Menu<T extends Menu<T>> {
         int pageCount = (elementCount / elementsPerPage) + 1;
         while (page < 0) page += pageCount;
         while (page >= pageCount) page -= pageCount;
+        navigate(view);
     }
 
 }
