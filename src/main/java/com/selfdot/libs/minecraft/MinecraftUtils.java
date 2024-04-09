@@ -1,0 +1,49 @@
+package com.selfdot.libs.minecraft;
+
+import net.minecraft.entity.projectile.FireworkRocketEntity;
+import net.minecraft.item.FireworkRocketItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+
+import java.util.List;
+
+public class MinecraftUtils {
+
+    public static void spawnFireworkExplosion(
+        Vec3d position,
+        World world,
+        DyeColor primaryColor,
+        FireworkRocketItem.Type type,
+        DyeColor fadeColor
+    ) {
+        ItemStack itemStack = new ItemStack(Items.FIREWORK_ROCKET, 1);
+        ItemStack itemStack2 = new ItemStack(Items.FIREWORK_STAR);
+        NbtCompound nbtCompound = itemStack2.getOrCreateSubNbt("Explosion");
+        nbtCompound.putIntArray("Colors", List.of(primaryColor.getFireworkColor()));
+        nbtCompound.putIntArray("FadeColors", List.of(fadeColor.getFireworkColor()));
+        nbtCompound.putByte("Type", (byte)type.getId());
+        nbtCompound.putByte("Flicker", (byte)1);
+        NbtCompound nbtCompound2 = itemStack.getOrCreateSubNbt("Fireworks");
+        NbtList nbtList = new NbtList();
+        NbtCompound nbtCompound3 = itemStack2.getSubNbt("Explosion");
+        if (nbtCompound3 != null) nbtList.add(nbtCompound3);
+        if (!nbtList.isEmpty()) nbtCompound2.put("Explosions", nbtList);
+
+        FireworkRocketEntity fireworkRocketEntity = new FireworkRocketEntity(
+            world,
+            position.getX(),
+            position.getY(),
+            position.getZ(),
+            itemStack
+        );
+        world.spawnEntity(fireworkRocketEntity);
+        world.sendEntityStatus(fireworkRocketEntity, (byte)17);
+        fireworkRocketEntity.discard();
+    }
+
+}
