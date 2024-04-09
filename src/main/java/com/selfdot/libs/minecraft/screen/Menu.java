@@ -2,6 +2,7 @@ package com.selfdot.libs.minecraft.screen;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public abstract class Menu<T extends Menu<T>> {
 
     private final MenuSize size;
@@ -117,6 +119,10 @@ public abstract class Menu<T extends Menu<T>> {
 
     public int getPage() {
         return page;
+    }
+
+    public void resetPage() {
+        page = 0;
     }
 
     public void movePage(int offset, int elementCount) {

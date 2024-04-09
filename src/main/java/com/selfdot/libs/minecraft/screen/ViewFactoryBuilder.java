@@ -1,5 +1,6 @@
 package com.selfdot.libs.minecraft.screen;
 
+import lombok.extern.slf4j.Slf4j;
 import net.minecraft.item.Items;
 
 import java.util.ArrayList;
@@ -8,12 +9,11 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+@Slf4j
 public class ViewFactoryBuilder<T extends Menu<T>> {
 
-    private final List<Component<T>> components = new ArrayList<>();
     private final List<Supplier<List<Component<T>>>> componentFactories = new ArrayList<>();
     private String returnsTo = "";
-
 
     public ViewFactoryBuilder<T> withComponents(Supplier<List<Component<T>>> componentFactory) {
         componentFactories.add(componentFactory);
@@ -25,8 +25,7 @@ public class ViewFactoryBuilder<T extends Menu<T>> {
     }
 
     public ViewFactoryBuilder<T> withComponent(Component<T> component) {
-        components.add(component);
-        return this;
+        return withComponent(() -> component);
     }
 
     public ViewFactoryBuilder<T> returnsTo(String returnsTo) {
@@ -41,7 +40,8 @@ public class ViewFactoryBuilder<T extends Menu<T>> {
         Function<U, ItemStackBuilder> iconFactory,
         BiConsumer<T, U> onElementClick
     ) {
-        return menu -> {
+        return menu -> withComponents(() -> {
+            List<Component<T>> components = new ArrayList<>();
             List<U> elements = elementsSupplier.get();
             menu.setElementsPerPage(ELEMENTS_PER_PAGE);
             for (
@@ -73,21 +73,20 @@ public class ViewFactoryBuilder<T extends Menu<T>> {
                 .withAction(menu_ -> menu_.movePage(1, elements.size()))
                 .build()
             );
-            return build().create(menu);
-        };
+            return components;
+        }).build().create(menu);
     }
 
     public ViewFactory<T> build() {
         return menu -> {
             if (!returnsTo.isEmpty()) {
-                components.add(
-                    new ComponentBuilder<T>(
-                        menu.columns() / 2, menu.rows() - (menu.isBordered() ? 2 : 1), Items.BARRIER
-                    ).withName("Back").navigatesTo(returnsTo).build()
-                );
+                withComponent(new ComponentBuilder<T>(
+                    menu.columns() / 2, menu.rows() - (menu.isBordered() ? 2 : 1), Items.BARRIER
+                ).withName("Back").withAction(Menu::resetPage).navigatesTo(returnsTo).build());
             }
-            componentFactories.forEach(componentSupplier -> components.addAll(componentSupplier.get()));
-            return new View<>(components);
+            return new View<>(
+                componentFactories.stream().flatMap(componentFactory -> componentFactory.get().stream()).toList()
+            );
         };
     }
 
