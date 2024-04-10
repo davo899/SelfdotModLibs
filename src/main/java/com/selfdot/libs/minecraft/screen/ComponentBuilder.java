@@ -13,8 +13,8 @@ public class ComponentBuilder<T extends Menu<T>> {
     private final int x;
     private final int y;
     private final ItemStackBuilder icon;
-    private Consumer<T> action = context -> {};
-    private Consumer<T> navigation = context -> {};
+    private Consumer<T> action = menu -> {};
+    private Consumer<T> navigation = menu -> {};
 
     public ComponentBuilder(int x, int y, ItemStackBuilder icon) {
         this.x = x;
@@ -52,6 +52,11 @@ public class ComponentBuilder<T extends Menu<T>> {
 
     public ComponentBuilder<T> navigatesTo(String view) {
         this.navigation = menu -> menu.navigate(view);
+        return this;
+    }
+
+    public ComponentBuilder<T> refreshes() {
+        this.navigation = Menu::refresh;
         return this;
     }
 

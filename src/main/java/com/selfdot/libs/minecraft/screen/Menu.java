@@ -125,12 +125,16 @@ public abstract class Menu<T extends Menu<T>> {
         page = 0;
     }
 
+    public void refresh() {
+        navigate(view);
+    }
+
     public void movePage(int offset, int elementCount) {
         page += offset;
         int pageCount = (elementCount / elementsPerPage) + 1;
         while (page < 0) page += pageCount;
         while (page >= pageCount) page -= pageCount;
-        navigate(view);
+        refresh();
     }
 
 }

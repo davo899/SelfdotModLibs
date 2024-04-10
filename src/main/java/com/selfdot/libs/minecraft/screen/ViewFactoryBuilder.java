@@ -1,11 +1,13 @@
 package com.selfdot.libs.minecraft.screen;
 
 import lombok.extern.slf4j.Slf4j;
+import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -31,6 +33,53 @@ public class ViewFactoryBuilder<T extends Menu<T>> {
     public ViewFactoryBuilder<T> returnsTo(String returnsTo) {
         this.returnsTo = returnsTo;
         return this;
+    }
+
+    public ViewFactoryBuilder<T> integerEditor(
+        Supplier<Integer> getter,
+        Consumer<Integer> setter,
+        int min,
+        int max,
+        int editLow,
+        int editHigh,
+        Item item,
+        String name
+    ) {
+        return withComponents(() -> List.of(
+            new ComponentBuilder<T>(1, 2, Items.RED_DYE)
+                .withName("Set to " + min)
+                .withAction(menu -> setter.accept(min))
+                .refreshes()
+                .build(),
+            new ComponentBuilder<T>(2, 2, Items.RED_DYE)
+                .withName("-" + editHigh)
+                .withAction(menu -> setter.accept(Math.max(getter.get() - editHigh, min)))
+                .refreshes()
+                .build(),
+            new ComponentBuilder<T>(3, 2, Items.RED_DYE)
+                .withName("-" + editLow)
+                .withAction(menu -> setter.accept(Math.max(getter.get() - editLow, min)))
+                .refreshes()
+                .build(),
+            new ComponentBuilder<T>(4, 2, item)
+                .withName(name + ": " + getter.get())
+                .build(),
+            new ComponentBuilder<T>(5, 2, Items.GREEN_DYE)
+                .withName("+" + editLow)
+                .withAction(menu -> setter.accept(Math.min(getter.get() + editLow, max)))
+                .refreshes()
+                .build(),
+            new ComponentBuilder<T>(6, 2, Items.GREEN_DYE)
+                .withName("+" + editHigh)
+                .withAction(menu -> setter.accept(Math.min(getter.get() + editHigh, max)))
+                .refreshes()
+                .build(),
+            new ComponentBuilder<T>(7, 2, Items.GREEN_DYE)
+                .withName("Set to " + max)
+                .withAction(menu -> setter.accept(max))
+                .refreshes()
+                .build()
+        ));
     }
 
     private static final int ELEMENTS_PER_ROW = 7;
