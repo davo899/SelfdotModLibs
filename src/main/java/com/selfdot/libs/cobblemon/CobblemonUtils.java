@@ -3,16 +3,15 @@ package com.selfdot.libs.cobblemon;
 import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.api.moves.Move;
 import com.cobblemon.mod.common.api.moves.categories.DamageCategories;
+import com.cobblemon.mod.common.api.pokemon.stats.Stat;
 import com.cobblemon.mod.common.api.pokemon.stats.Stats;
 import com.cobblemon.mod.common.api.types.ElementalType;
 import com.cobblemon.mod.common.api.types.ElementalTypes;
 import com.cobblemon.mod.common.item.PokemonItem;
-import com.cobblemon.mod.common.pokemon.EVs;
-import com.cobblemon.mod.common.pokemon.IVs;
-import com.cobblemon.mod.common.pokemon.Pokemon;
-import com.cobblemon.mod.common.pokemon.Species;
+import com.cobblemon.mod.common.pokemon.*;
 import com.selfdot.libs.minecraft.screen.ItemStackBuilder;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -152,6 +151,20 @@ public class CobblemonUtils {
 
     public static ItemStackBuilder statVitaminItemStack(Stats stat) {
         return itemStack(statVitaminItem(stat)).withName(stat.getDisplayName().getString());
+    }
+
+    public static ItemStackBuilder natureItem(Nature nature) {
+        ItemStackBuilder itemStack = itemStack(Items.CYAN_DYE)
+            .withName(Text.translatable(nature.getDisplayName()).getString());
+        Stat increasedStat = nature.getIncreasedStat();
+        Stat decreasedStat = nature.getDecreasedStat();
+        if (increasedStat == null || decreasedStat == null) {
+            itemStack.withLore(Formatting.GRAY + "No stat change");
+        } else {
+            itemStack.withLore(Formatting.GREEN + "+" + increasedStat.getDisplayName().getString())
+                .withLore(Formatting.RED + "-" + decreasedStat.getDisplayName().getString());
+        }
+        return itemStack;
     }
 
 }
