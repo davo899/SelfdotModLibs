@@ -62,7 +62,7 @@ public class ViewFactoryBuilder<T extends Menu<T>> {
                 .refreshes()
                 .build(),
             new ComponentBuilder<T>(4, 2, item.get())
-                .withName(name + ": " + getter.get())
+                .withName(name.get() + ": " + getter.get())
                 .build(),
             new ComponentBuilder<T>(5, 2, Items.GREEN_DYE)
                 .withName("+" + editLow)
