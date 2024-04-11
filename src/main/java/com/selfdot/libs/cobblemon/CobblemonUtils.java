@@ -2,7 +2,6 @@ package com.selfdot.libs.cobblemon;
 
 import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.api.moves.Move;
-import com.cobblemon.mod.common.api.moves.MoveSet;
 import com.cobblemon.mod.common.api.moves.categories.DamageCategories;
 import com.cobblemon.mod.common.api.pokemon.stats.Stats;
 import com.cobblemon.mod.common.api.types.ElementalType;
@@ -14,7 +13,6 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.cobblemon.mod.common.pokemon.Species;
 import com.selfdot.libs.minecraft.screen.ItemStackBuilder;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -140,8 +138,8 @@ public class CobblemonUtils {
         return itemStackBuilder;
     }
 
-    public static ItemStackBuilder statVitaminItem(Stats stat) {
-        return itemStack(switch (stat) {
+    public static Item statVitaminItem(Stats stat) {
+        return switch (stat) {
             case HP -> CobblemonItems.HP_UP;
             case ATTACK -> CobblemonItems.PROTEIN;
             case DEFENCE -> CobblemonItems.IRON;
@@ -149,7 +147,11 @@ public class CobblemonUtils {
             case SPECIAL_DEFENCE -> CobblemonItems.ZINC;
             case SPEED -> CobblemonItems.CARBOS;
             default -> CobblemonItems.CHARCOAL;
-        }).withName(stat.getDisplayName().getString());
+        };
+    }
+
+    public static ItemStackBuilder statVitaminItemStack(Stats stat) {
+        return itemStack(statVitaminItem(stat)).withName(stat.getDisplayName().getString());
     }
 
 }
