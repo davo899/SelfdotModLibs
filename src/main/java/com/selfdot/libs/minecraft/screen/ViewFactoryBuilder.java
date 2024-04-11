@@ -42,8 +42,8 @@ public class ViewFactoryBuilder<T extends Menu<T>> {
         int max,
         int editLow,
         int editHigh,
-        Item item,
-        String name
+        Supplier<Item> item,
+        Supplier<String> name
     ) {
         return withComponents(() -> List.of(
             new ComponentBuilder<T>(1, 2, Items.RED_DYE)
@@ -61,7 +61,7 @@ public class ViewFactoryBuilder<T extends Menu<T>> {
                 .withAction(menu -> setter.accept(Math.max(getter.get() - editLow, min)))
                 .refreshes()
                 .build(),
-            new ComponentBuilder<T>(4, 2, item)
+            new ComponentBuilder<T>(4, 2, item.get())
                 .withName(name + ": " + getter.get())
                 .build(),
             new ComponentBuilder<T>(5, 2, Items.GREEN_DYE)
