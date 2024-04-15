@@ -12,6 +12,8 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+import static net.minecraft.util.Formatting.*;
+
 public class MinecraftUtils {
 
     public static void spawnFireworkExplosion(
@@ -44,6 +46,27 @@ public class MinecraftUtils {
         world.spawnEntity(fireworkRocketEntity);
         world.sendEntityStatus(fireworkRocketEntity, (byte)17);
         fireworkRocketEntity.discard();
+    }
+
+    public static String colourize(String string) {
+        return string
+            .replace("&0", BLACK.asString()).replace("&1", DARK_BLUE.asString())
+            .replace("&2", DARK_GREEN.asString()).replace("&3", DARK_AQUA.asString())
+            .replace("&4", DARK_RED.asString()).replace("&5", DARK_PURPLE.asString())
+            .replace("&6", GOLD.asString()).replace("&7", GRAY.asString())
+            .replace("&8", DARK_GRAY.asString()).replace("&9", BLUE.asString())
+            .replace("&a", GREEN.asString()).replace("&b", AQUA.asString())
+            .replace("&c", RED.asString()).replace("&d", LIGHT_PURPLE.asString())
+            .replace("&e", YELLOW.asString()).replace("&f", WHITE.asString())
+            .replace("&k", OBFUSCATED.asString()).replace("&l", BOLD.asString())
+            .replace("&m", STRIKETHROUGH.asString()).replace("&n", UNDERLINE.asString())
+            .replace("&o", ITALIC.asString()).replace("&r", RESET.asString())
+            .replace("&A", GREEN.asString()).replace("&B", AQUA.asString())
+            .replace("&C", RED.asString()).replace("&D", LIGHT_PURPLE.asString())
+            .replace("&E", YELLOW.asString()).replace("&F", WHITE.asString())
+            .replace("&K", OBFUSCATED.asString()).replace("&L", BOLD.asString())
+            .replace("&M", STRIKETHROUGH.asString()).replace("&N", UNDERLINE.asString())
+            .replace("&O", ITALIC.asString()).replace("&R", RESET.asString());
     }
 
 }
