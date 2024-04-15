@@ -50,23 +50,24 @@ public class MinecraftUtils {
 
     public static String colourize(String string) {
         return string
-            .replace("&0", BLACK.asString()).replace("&1", DARK_BLUE.asString())
-            .replace("&2", DARK_GREEN.asString()).replace("&3", DARK_AQUA.asString())
-            .replace("&4", DARK_RED.asString()).replace("&5", DARK_PURPLE.asString())
-            .replace("&6", GOLD.asString()).replace("&7", GRAY.asString())
-            .replace("&8", DARK_GRAY.asString()).replace("&9", BLUE.asString())
-            .replace("&a", GREEN.asString()).replace("&b", AQUA.asString())
-            .replace("&c", RED.asString()).replace("&d", LIGHT_PURPLE.asString())
-            .replace("&e", YELLOW.asString()).replace("&f", WHITE.asString())
-            .replace("&k", OBFUSCATED.asString()).replace("&l", BOLD.asString())
-            .replace("&m", STRIKETHROUGH.asString()).replace("&n", UNDERLINE.asString())
-            .replace("&o", ITALIC.asString()).replace("&r", RESET.asString())
-            .replace("&A", GREEN.asString()).replace("&B", AQUA.asString())
-            .replace("&C", RED.asString()).replace("&D", LIGHT_PURPLE.asString())
-            .replace("&E", YELLOW.asString()).replace("&F", WHITE.asString())
-            .replace("&K", OBFUSCATED.asString()).replace("&L", BOLD.asString())
-            .replace("&M", STRIKETHROUGH.asString()).replace("&N", UNDERLINE.asString())
-            .replace("&O", ITALIC.asString()).replace("&R", RESET.asString());
+            .replace("&0", String.valueOf(BLACK)).replace("&1", String.valueOf(DARK_BLUE))
+            .replace("&2", String.valueOf(DARK_GREEN)).replace("&3", String.valueOf(DARK_AQUA))
+            .replace("&4", String.valueOf(DARK_RED)).replace("&5", String.valueOf(DARK_PURPLE))
+            .replace("&6", String.valueOf(GOLD)).replace("&7", String.valueOf(GRAY))
+            .replace("&8", String.valueOf(DARK_GRAY)).replace("&9", String.valueOf(BLUE))
+            .replace("&a", String.valueOf(GREEN)).replace("&b", String.valueOf(AQUA))
+            .replace("&c", String.valueOf(RED)).replace("&d", String.valueOf(LIGHT_PURPLE))
+            .replace("&e", String.valueOf(YELLOW)).replace("&f", String.valueOf(WHITE))
+            .replace("&k", String.valueOf(OBFUSCATED)).replace("&l", String.valueOf(BOLD))
+            .replace("&m", String.valueOf(STRIKETHROUGH)).replace("&n", String.valueOf(UNDERLINE))
+            .replace("&o", String.valueOf(ITALIC)).replace("&r", String.valueOf(RESET))
+            .replace("&A", String.valueOf(GREEN)).replace("&B", String.valueOf(AQUA))
+            .replace("&C", String.valueOf(RED)).replace("&D", String.valueOf(LIGHT_PURPLE))
+            .replace("&E", String.valueOf(YELLOW)).replace("&F", String.valueOf(WHITE))
+            .replace("&K", String.valueOf(OBFUSCATED)).replace("&L", String.valueOf(BOLD))
+            .replace("&M", String.valueOf(STRIKETHROUGH)).replace("&N", String.valueOf(UNDERLINE))
+            .replace("&O", String.valueOf(ITALIC)).replace("&R", String.valueOf(RESET));
+
     }
 
 }
