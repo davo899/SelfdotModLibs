@@ -9,6 +9,7 @@ import com.selfdot.libs.minecraft.permissions.PermissionValidator;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.PlayerManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
@@ -50,7 +51,9 @@ public abstract class DisableableMod {
     }
 
     private void updateCommandPermissions() {
-        server.getPlayerManager().getPlayerList().forEach(player -> server.getPlayerManager().sendCommandTree(player));
+        PlayerManager playerManager = server.getPlayerManager();
+        if (playerManager == null) return;
+        playerManager.getPlayerList().forEach(player -> server.getPlayerManager().sendCommandTree(player));
     }
 
     public void enable() {
