@@ -36,9 +36,14 @@ public class CobblemonUtils {
         Move[] moves = new Move[4];
         for (int i = 0; i < 4; i++) moves[i] = pokemon.getMoveSet().get(i);
 
+        String formName = "";
+        if (!pokemon.getAspects().isEmpty()) {
+            formName = "-" + pokemon.getForm().getName();
+        }
+
         ItemStackBuilder itemStackBuilder = itemStack(PokemonItem.from(pokemon))
             .withName(
-                GRAY + pokemon.getDisplayName().getString() + (pokemon.getShiny() ? GOLD + " ★" : "")
+                GRAY + pokemon.getDisplayName().getString() + formName + (pokemon.getShiny() ? GOLD + " ★" : "")
             )
             .withLore(GREEN + "Gender: " + WHITE + pokemon.getGender())
             .withLore(AQUA + "Level: " + WHITE + pokemon.getLevel())
