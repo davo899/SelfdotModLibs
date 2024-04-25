@@ -11,10 +11,11 @@ import com.cobblemon.mod.common.item.PokemonItem;
 import com.cobblemon.mod.common.pokemon.*;
 import com.selfdot.libs.minecraft.screen.ItemStackBuilder;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+
+import java.util.Set;
 
 import static com.selfdot.libs.minecraft.screen.ItemStackBuilder.itemStack;
 import static net.minecraft.util.Formatting.*;
@@ -22,7 +23,11 @@ import static net.minecraft.util.Formatting.*;
 public class CobblemonUtils {
 
     public static ItemStackBuilder speciesItem(Species species) {
-        return itemStack(PokemonItem.from(species));
+        return speciesItem(species, Set.of());
+    }
+
+    public static ItemStackBuilder speciesItem(Species species, Set<String> aspects) {
+        return itemStack(PokemonItem.from(species, aspects, 1, null));
     }
 
     public static ItemStackBuilder pokemonInfoItem(Pokemon pokemon) {
