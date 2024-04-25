@@ -91,7 +91,7 @@ public class CobblemonUtils {
             .withLore(DARK_GREEN + "Moves: ");
         for (int i = 0; i < 4; i++) {
             itemStackBuilder.withLore(
-                WHITE + "\t" + (moves[i] == null ? "Empty" : moves[i].getDisplayName().getString())
+                WHITE + "-" + (moves[i] == null ? "Empty" : moves[i].getDisplayName().getString())
             );
         }
         return itemStackBuilder;
