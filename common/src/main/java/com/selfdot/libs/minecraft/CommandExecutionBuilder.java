@@ -1,6 +1,7 @@
 package com.selfdot.libs.minecraft;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.selfdot.libs.minecraft.permissions.PermissionLevel;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,6 +21,7 @@ public class CommandExecutionBuilder {
     }
 
     private String command;
+    private PermissionLevel level = null;
 
     private CommandExecutionBuilder(String command) {
         this.command = command;
@@ -30,8 +32,14 @@ public class CommandExecutionBuilder {
         return this;
     }
 
+    public CommandExecutionBuilder withLevel(PermissionLevel level) {
+        this.level = level;
+        return this;
+    }
+
     private void executeAs(ServerCommandSource source) {
         try {
+            if (level != null) source = source.withLevel(level.ordinal());
             source.getServer().getCommandManager().getDispatcher().execute(command, source);
 
         } catch (CommandSyntaxException e) {
