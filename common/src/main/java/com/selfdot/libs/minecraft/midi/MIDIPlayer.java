@@ -5,7 +5,6 @@ import com.selfdot.libs.minecraft.midi.event.NoteOnEvent;
 import com.selfdot.libs.minecraft.midi.event.SetTempoEvent;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -54,18 +53,18 @@ public class MIDIPlayer {
                             int range = Math.floorDiv(offsetKey, 12);
 
                             SoundEvent soundEvent;
-                            if (range <= 0) soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_BASS.value();
-                            else if (range == 1) soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_GUITAR.value();
+                            if (range <= 0) soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_BASS;
+                            else if (range == 1) soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_GUITAR;
                             else if (range == 2) {
-                                soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_GUITAR.value();
+                                soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_GUITAR;
                                 inOctaveKey += 12;
                             } else if (range == 3) {
-                                soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_BIT.value();
+                                soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_BIT;
                                 inOctaveKey += 12;
-                            } else soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_CHIME.value();
+                            } else soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_CHIME;
 
                             player.networkHandler.sendPacket(new PlaySoundS2CPacket(
-                                RegistryEntry.of(soundEvent),
+                                soundEvent,
                                 SoundCategory.RECORDS,
                                 player.getX(),
                                 player.getY() + 2,
@@ -80,21 +79,21 @@ public class MIDIPlayer {
 
                             SoundEvent soundEvent = null;
                             switch (noteOnEvent.key) {
-                                case 36 -> soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM.value();
-                                case 38 -> soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_SNARE.value();
+                                case 36 -> soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM;
+                                case 38 -> soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_SNARE;
                                 case 42 -> {
-                                    soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_HAT.value();
+                                    soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_HAT;
                                     pitch = 2;
                                 }
                                 case 45 -> {
-                                    soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM.value();
+                                    soundEvent = SoundEvents.BLOCK_NOTE_BLOCK_BASEDRUM;
                                     pitch = 2;
                                 }
                             }
 
                             if (soundEvent != null) {
                                 player.networkHandler.sendPacket(new PlaySoundS2CPacket(
-                                    RegistryEntry.of(soundEvent),
+                                    soundEvent,
                                     SoundCategory.RECORDS,
                                     player.getX(),
                                     player.getY() + 2,

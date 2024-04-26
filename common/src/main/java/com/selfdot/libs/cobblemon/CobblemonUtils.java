@@ -27,7 +27,7 @@ public class CobblemonUtils {
     }
 
     public static ItemStackBuilder speciesItem(Species species, Set<String> aspects) {
-        return itemStack(PokemonItem.from(species, aspects, 1, null));
+        return itemStack(PokemonItem.from(species, aspects, 1));
     }
 
     public static ItemStackBuilder pokemonInfoItem(Pokemon pokemon) {
@@ -41,7 +41,7 @@ public class CobblemonUtils {
             formName = "-" + pokemon.getForm().getName();
         }
 
-        ItemStackBuilder itemStackBuilder = itemStack(PokemonItem.from(pokemon))
+        ItemStackBuilder itemStackBuilder = speciesItem(pokemon.getSpecies())
             .withName(
                 GRAY + pokemon.getDisplayName().getString() + formName + (pokemon.getShiny() ? GOLD + " ★" : "")
             )
@@ -149,13 +149,13 @@ public class CobblemonUtils {
 
     public static Item statVitaminItem(Stats stat) {
         return switch (stat) {
-            case HP -> CobblemonItems.HP_UP;
-            case ATTACK -> CobblemonItems.PROTEIN;
-            case DEFENCE -> CobblemonItems.IRON;
-            case SPECIAL_ATTACK -> CobblemonItems.CALCIUM;
-            case SPECIAL_DEFENCE -> CobblemonItems.ZINC;
-            case SPEED -> CobblemonItems.CARBOS;
-            default -> CobblemonItems.CHARCOAL;
+            case HP -> CobblemonItems.HP_UP.get();
+            case ATTACK -> CobblemonItems.PROTEIN.get();
+            case DEFENCE -> CobblemonItems.IRON.get();
+            case SPECIAL_ATTACK -> CobblemonItems.CALCIUM.get();
+            case SPECIAL_DEFENCE -> CobblemonItems.ZINC.get();
+            case SPEED -> CobblemonItems.CARBOS.get();
+            default -> CobblemonItems.CHARCOAL.get();
         };
     }
 
