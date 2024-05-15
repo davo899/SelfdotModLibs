@@ -11,6 +11,7 @@ import com.cobblemon.mod.common.item.PokemonItem;
 import com.cobblemon.mod.common.pokemon.*;
 import com.selfdot.libs.minecraft.screen.ItemStackBuilder;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -41,6 +42,9 @@ public class CobblemonUtils {
             formName = "-" + pokemon.getForm().getName();
         }
 
+        String heldItem = "None";
+        if (!pokemon.heldItem().getItem().equals(Items.AIR)) heldItem = pokemon.heldItem().getName().getString();
+
         ItemStackBuilder itemStackBuilder = itemStack(PokemonItem.from(pokemon))
             .withName(
                 GRAY + pokemon.getDisplayName().getString() + formName + (pokemon.getShiny() ? GOLD + " ★" : "")
@@ -55,7 +59,7 @@ public class CobblemonUtils {
                 GOLD + "Ability: " +
                     WHITE + Text.translatable(pokemon.getAbility().getDisplayName()).getString()
             )
-            .withLore(LIGHT_PURPLE + "IVs: ")
+            .withLore(GRAY + "Held Item: " + heldItem)
             .withLore(String.format(
                 "  %5s: %-3s %5s: %-3s %5s: %-3s",
                 RED + "HP",
