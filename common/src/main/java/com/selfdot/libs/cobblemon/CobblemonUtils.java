@@ -60,6 +60,7 @@ public class CobblemonUtils {
                     WHITE + Text.translatable(pokemon.getAbility().getDisplayName()).getString()
             )
             .withLore(GRAY + "Held Item: " + WHITE + heldItem)
+            .withLore(LIGHT_PURPLE + "IVs: ")
             .withLore(String.format(
                 "  %5s: %-3s %5s: %-3s %5s: %-3s",
                 RED + "HP",
