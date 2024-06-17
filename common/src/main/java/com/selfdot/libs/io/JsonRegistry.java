@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,26 +17,27 @@ public class JsonRegistry<T> {
 
     private final Gson gson = new Gson();
     private final Class<T> clazz;
-    private final String directoryPathString;
+    private final Path directoryPath;
     protected final Map<String, T> items = new HashMap<>();
 
     public JsonRegistry(Class<T> clazz, String directoryPathString) {
         this.clazz = clazz;
-        this.directoryPathString = directoryPathString;
+        this.directoryPath = Paths.get(directoryPathString);
     }
 
-    public void load() {
-        items.clear();
-
-        Path directoryPath = Paths.get(directoryPathString);
+    private void createDirectories() {
         try {
             if (!Files.exists(directoryPath)) Files.createDirectories(directoryPath);
 
         } catch (IOException e) {
             e.printStackTrace();
-            return;
         }
+    }
 
+    public void load() {
+        items.clear();
+
+        createDirectories();
         try (Stream<Path> paths = Files.walk(directoryPath)) {
             paths.filter(Files::isRegularFile)
                 .filter(path -> path.toString().endsWith(".json"))
@@ -53,6 +55,18 @@ public class JsonRegistry<T> {
                 });
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void save() {
+        createDirectories();
+        for (Map.Entry<String, T> entry : items.entrySet()) {
+            try {
+                gson.toJson(entry.getValue(), new FileWriter(directoryPath.resolve(entry.getKey()).toFile()));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
