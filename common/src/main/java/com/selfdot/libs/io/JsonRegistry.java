@@ -16,18 +16,27 @@ public class JsonRegistry<T> {
 
     private final Gson gson = new Gson();
     private final Class<T> clazz;
-    private final String directoryPath;
+    private final String directoryPathString;
     protected final Map<String, T> items = new HashMap<>();
 
-    public JsonRegistry(Class<T> clazz, String directoryPath) {
+    public JsonRegistry(Class<T> clazz, String directoryPathString) {
         this.clazz = clazz;
-        this.directoryPath = directoryPath;
+        this.directoryPathString = directoryPathString;
     }
 
     public void load() {
         items.clear();
 
-        try (Stream<Path> paths = Files.walk(Paths.get(directoryPath))) {
+        Path directoryPath = Paths.get(directoryPathString);
+        try {
+            if (!Files.exists(directoryPath)) Files.createDirectories(directoryPath);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        try (Stream<Path> paths = Files.walk(directoryPath)) {
             paths.filter(Files::isRegularFile)
                 .filter(path -> path.toString().endsWith(".json"))
                 .forEach(path -> {
