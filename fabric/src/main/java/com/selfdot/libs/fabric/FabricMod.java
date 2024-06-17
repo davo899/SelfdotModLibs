@@ -7,10 +7,11 @@ public abstract class FabricMod extends MinecraftMod implements ModInitializer {
 
     public FabricMod(String modId, boolean withReload) {
         super(modId, withReload);
+        setPermissionValidator(new FabricPermissionValidator());
     }
 
     public FabricMod(String modId) {
-        super(modId, true);
+        this(modId, true);
     }
 
 }
