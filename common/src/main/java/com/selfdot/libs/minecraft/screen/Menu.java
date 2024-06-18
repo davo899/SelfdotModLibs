@@ -25,6 +25,7 @@ public abstract class Menu<T extends Menu<T>> {
     private final MenuSize size;
     private final Inventory inventory;
     private final Map<String, ViewFactory<T>> viewFactories = new HashMap<>();
+    @Getter
     private final boolean isBordered;
 
     private String view;
