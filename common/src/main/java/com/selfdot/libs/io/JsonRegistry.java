@@ -61,11 +61,8 @@ public class JsonRegistry<T> {
     public void save() {
         createDirectories();
         for (Map.Entry<String, T> entry : items.entrySet()) {
-            try {
-                gson.toJson(
-                    entry.getValue(), new FileWriter(directoryPath.resolve(entry.getKey() + ".json").toFile())
-                );
-
+            try (FileWriter writer = new FileWriter(directoryPath.resolve(entry.getKey() + ".json").toFile())) {
+                gson.toJson(entry.getValue(), writer);
             } catch (IOException e) {
                 e.printStackTrace();
             }
