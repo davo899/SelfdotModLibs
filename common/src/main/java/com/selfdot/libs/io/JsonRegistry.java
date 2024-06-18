@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 public class JsonRegistry<T> {
 
-    private final Gson gson = new Gson();
+    protected Gson gson = new Gson();
     private final Class<T> clazz;
     private final Path directoryPath;
     protected final Map<String, T> items = new HashMap<>();
