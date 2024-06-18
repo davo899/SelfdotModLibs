@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class JsonUtils {
 
-    public <T> T loadOrDefault(Gson gson, String filename, Class<T> clazz, T fallback) {
+    public static <T> T loadOrDefault(Gson gson, String filename, Class<T> clazz, T fallback) {
         try (FileReader reader = new FileReader(filename)) {
             return gson.fromJson(reader, clazz);
         } catch (IOException | JsonSyntaxException e) {
