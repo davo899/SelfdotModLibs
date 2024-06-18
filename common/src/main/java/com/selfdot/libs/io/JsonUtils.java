@@ -3,7 +3,9 @@ package com.selfdot.libs.io;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class JsonUtils {
@@ -11,6 +13,13 @@ public class JsonUtils {
     public static <T> T loadOrDefault(Gson gson, String filename, Class<T> clazz, T fallback) {
         try (FileReader reader = new FileReader(filename)) {
             return gson.fromJson(reader, clazz);
+        } catch (FileNotFoundException e) {
+            try (FileWriter writer = new FileWriter(filename)) {
+                gson.toJson(fallback, writer);
+                writer.flush();
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
         } catch (IOException | JsonSyntaxException e) {
             e.printStackTrace();
         }
