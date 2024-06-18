@@ -25,13 +25,11 @@ public abstract class Menu<T extends Menu<T>> {
     private final MenuSize size;
     private final Inventory inventory;
     private final Map<String, ViewFactory<T>> viewFactories = new HashMap<>();
+    private final boolean isBordered;
 
     private String view;
     private final List<Component<T>> components = new ArrayList<>();
     private int page = 0;
-
-    @Getter @Setter
-    private boolean isBordered = false;
 
     @Getter @Setter
     private int elementsPerPage;
@@ -40,12 +38,13 @@ public abstract class Menu<T extends Menu<T>> {
 
     protected abstract void registerViewFactories(Map<String, ViewFactory<T>> viewFactories);
 
-    protected Menu(String title, PlayerEntity player, MenuSize size, String indexView) {
+    protected Menu(String title, PlayerEntity player, MenuSize size, String indexView, boolean isBordered) {
         this.player = player;
         this.size = size;
         this.inventory = new SimpleInventory(9 * rows());
-        registerViewFactories(viewFactories);
+        this.isBordered = isBordered;
 
+        registerViewFactories(viewFactories);
         navigate(indexView);
         Menu<T> menu = this;
         player.openHandledScreen(new NamedScreenHandlerFactory() {
