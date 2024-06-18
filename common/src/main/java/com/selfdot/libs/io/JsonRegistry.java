@@ -63,6 +63,7 @@ public class JsonRegistry<T> {
         for (Map.Entry<String, T> entry : items.entrySet()) {
             try (FileWriter writer = new FileWriter(directoryPath.resolve(entry.getKey() + ".json").toFile())) {
                 gson.toJson(entry.getValue(), writer);
+                writer.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
