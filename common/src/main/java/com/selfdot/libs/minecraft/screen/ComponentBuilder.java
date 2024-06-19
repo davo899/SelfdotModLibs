@@ -3,23 +3,21 @@ package com.selfdot.libs.minecraft.screen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 
-import java.util.function.Consumer;
-
 import static com.selfdot.libs.minecraft.screen.ItemStackBuilder.itemStack;
 import static com.selfdot.libs.minecraft.screen.ItemStackBuilder.skullOf;
 
-public class ComponentBuilder<T extends Menu<T>> {
+public class ComponentBuilder<T extends Menu<T>> extends AbstractComponentBuilder<T, ComponentBuilder<T>> {
 
-    private final int x;
-    private final int y;
     private final ItemStackBuilder icon;
-    private Consumer<T> action = menu -> {};
-    private Consumer<T> navigation = menu -> {};
 
     public ComponentBuilder(int x, int y, ItemStackBuilder icon) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
         this.icon = icon;
+    }
+
+    @Override
+    protected ComponentBuilder<T> self() {
+        return this;
     }
 
     public ComponentBuilder(int x, int y, Item item) {
@@ -45,23 +43,8 @@ public class ComponentBuilder<T extends Menu<T>> {
         return this;
     }
 
-    public ComponentBuilder<T> withAction(Consumer<T> action) {
-        this.action = action;
-        return this;
-    }
-
-    public ComponentBuilder<T> navigatesTo(String view) {
-        this.navigation = menu -> menu.navigate(view);
-        return this;
-    }
-
-    public ComponentBuilder<T> refreshes() {
-        this.navigation = Menu::refresh;
-        return this;
-    }
-
     public Component<T> build() {
-        return new Component<>((y * 9) + x, icon.build(), action, navigation);
+        return new Component<>((y * 9) + x, new Icon(icon.build()), action, navigation);
     }
 
 }

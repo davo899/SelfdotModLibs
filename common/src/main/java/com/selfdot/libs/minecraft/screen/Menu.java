@@ -114,7 +114,7 @@ public abstract class Menu<T extends Menu<T>> {
 
         View<T> view = viewFactories.get(nextView).create(self());
         components.addAll(view.components());
-        components.forEach(component -> inventory.setStack(component.slot(), component.icon()));
+        components.forEach(component -> inventory.setStack(component.slot(), component.icon().getItemStack()));
     }
 
     public int getPage() {
@@ -135,6 +135,10 @@ public abstract class Menu<T extends Menu<T>> {
         while (page < 0) page += pageCount;
         while (page >= pageCount) page -= pageCount;
         refresh();
+    }
+
+    public void tick() {
+        components.forEach(component -> component.tick(inventory));
     }
 
 }
