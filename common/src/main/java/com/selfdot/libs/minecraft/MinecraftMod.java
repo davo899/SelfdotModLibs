@@ -7,7 +7,6 @@ import com.selfdot.libs.minecraft.permissions.PermissionLevel;
 import com.selfdot.libs.minecraft.permissions.PermissionValidator;
 import com.selfdot.libs.minecraft.screen.MenuHandler;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
-import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;

@@ -1,29 +1,32 @@
 package com.selfdot.libs.minecraft.screen;
 
+import com.selfdot.libs.minecraft.task.TaskRunner;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.GenericContainerScreenHandler;
+import net.minecraft.screen.ScreenHandlerSyncHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 public class MenuHandler extends GenericContainerScreenHandler {
 
-    private static final List<Menu<?>> openMenus = new ArrayList<>();
+    private static final List<MenuHandler> openMenus = new ArrayList<>();
 
     public static void tickOpenMenus() {
-        openMenus.forEach(Menu::tick);
+        openMenus.forEach(MenuHandler::tick);
     }
 
     private final Menu<?> menu;
+    private final PlayerInventory playerInventory;
+    private final List<ItemStack> playerItems = new ArrayList<>();
 
     public MenuHandler(
         ScreenHandlerType<?> type,
@@ -35,7 +38,17 @@ public class MenuHandler extends GenericContainerScreenHandler {
     ) {
         super(type, syncId, playerInventory, inventory, rows);
         this.menu = menu;
-        openMenus.add(menu);
+        this.playerInventory = playerInventory;
+        openMenus.add(this);
+    }
+
+    private void tick() {
+        menu.tick();
+
+        playerItems.clear();
+        for (int i = 0; i < playerInventory.size(); i++) {
+            playerItems.add(playerInventory.getStack(i));
+        }
     }
 
     @Override
@@ -49,14 +62,19 @@ public class MenuHandler extends GenericContainerScreenHandler {
     @Override
     public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
         menu.onSlotClick(slotIndex);
-        setCursorStack(ItemStack.EMPTY);
-        setPreviousCursorStack(ItemStack.EMPTY);
     }
 
     @Override
     public void onClosed(PlayerEntity player) {
         super.onClosed(player);
-        if (player instanceof ServerPlayerEntity) openMenus.remove(menu);
+        if (player instanceof ServerPlayerEntity) {
+            openMenus.remove(this);
+            TaskRunner.getInstance().runLater(() -> {
+                for (int i = 0; i < playerInventory.size(); i++) {
+                    playerInventory.setStack(i, playerItems.get(i));
+                }
+            }, 1);
+        }
     }
 
 }
