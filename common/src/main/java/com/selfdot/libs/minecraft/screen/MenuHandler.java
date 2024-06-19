@@ -35,7 +35,6 @@ public class MenuHandler extends GenericContainerScreenHandler {
     ) {
         super(type, syncId, playerInventory, inventory, rows);
         this.menu = menu;
-        log.info("MENU OPENED");
         openMenus.add(menu);
     }
 
@@ -57,10 +56,7 @@ public class MenuHandler extends GenericContainerScreenHandler {
     @Override
     public void onClosed(PlayerEntity player) {
         super.onClosed(player);
-        if (player instanceof ServerPlayerEntity) {
-            log.info("MENU CLOSED");
-            openMenus.remove(menu);
-        }
+        if (player instanceof ServerPlayerEntity) openMenus.remove(menu);
     }
 
 }
