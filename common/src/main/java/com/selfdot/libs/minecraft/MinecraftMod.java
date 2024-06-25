@@ -5,9 +5,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.selfdot.libs.minecraft.permissions.Permission;
 import com.selfdot.libs.minecraft.permissions.PermissionLevel;
 import com.selfdot.libs.minecraft.permissions.PermissionValidator;
-import com.selfdot.libs.minecraft.screen.MenuHandler;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
-import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
@@ -39,8 +37,6 @@ public abstract class MinecraftMod {
     public void reload() { }
 
     public void onInitialize() {
-        TickEvent.SERVER_PRE.register(server -> MenuHandler.tickOpenMenus());
-
         if (withReload) {
             Permission reloadPermission = new Permission(
                 modId + ".reload", PermissionLevel.MULTIPLAYER_MANAGEMENT
