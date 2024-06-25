@@ -2,6 +2,7 @@ package com.selfdot.libs.io;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -10,10 +11,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+@Slf4j
 public class JsonRegistry<T> {
 
     protected Gson gson = new Gson();
@@ -35,6 +39,10 @@ public class JsonRegistry<T> {
         }
     }
 
+    protected boolean validate(T item) {
+        return true;
+    }
+
     public void load() {
         items.clear();
 
@@ -54,6 +62,20 @@ public class JsonRegistry<T> {
                         e.printStackTrace();
                     }
                 });
+
+            List<String> invalidItems = new ArrayList<>();
+            for (String key : items.keySet()) {
+                if (!validate(items.get(key))) invalidItems.add(key);
+            }
+            invalidItems.forEach(key -> {
+                log.error("Skipping invalid " + clazz.toString() + ": " + key);
+                items.remove(key);
+            });
+            log.info(
+                "Finished loading " + clazz.toString() + " registry: " + items.size() +
+                " valid, " + invalidItems.size() + " invalid"
+            );
+
         } catch (IOException e) {
             e.printStackTrace();
         }
