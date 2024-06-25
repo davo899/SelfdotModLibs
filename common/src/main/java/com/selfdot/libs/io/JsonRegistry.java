@@ -72,7 +72,7 @@ public class JsonRegistry<T> {
                 items.remove(key);
             });
             log.info(
-                "Finished loading " + clazz.toString() + " registry: " + items.size() +
+                "Finished loading " + clazz.getName() + " registry: " + items.size() +
                 " valid, " + invalidItems.size() + " invalid"
             );
 
