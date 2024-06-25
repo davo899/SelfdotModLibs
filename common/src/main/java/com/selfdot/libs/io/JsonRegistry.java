@@ -68,7 +68,7 @@ public class JsonRegistry<T> {
                 if (!validate(items.get(key))) invalidItems.add(key);
             }
             invalidItems.forEach(key -> {
-                log.error("Skipping invalid " + clazz.toString() + ": " + key);
+                log.error("Skipping invalid " + clazz.getSimpleName() + ": " + key);
                 items.remove(key);
             });
             log.info(
