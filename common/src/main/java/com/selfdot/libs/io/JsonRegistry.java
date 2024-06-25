@@ -6,6 +6,7 @@ import com.google.gson.JsonSyntaxException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -42,7 +43,7 @@ public class JsonRegistry<T> {
             paths.filter(Files::isRegularFile)
                 .filter(path -> path.toString().endsWith(".json"))
                 .forEach(path -> {
-                    try (FileReader reader = new FileReader(path.toFile())) {
+                    try (FileReader reader = new FileReader(path.toFile(), StandardCharsets.UTF_8)) {
                         String fileName = path.getFileName().toString();
                         int dotIndex = fileName.lastIndexOf('.');
                         items.put(
