@@ -81,16 +81,20 @@ public class JsonRegistry<T> {
         }
     }
 
-    public void save() {
+    public void save(String key) {
+        T item = items.get(key);
+        if (item == null) return;
         createDirectories();
-        for (Map.Entry<String, T> entry : items.entrySet()) {
-            try (FileWriter writer = new FileWriter(directoryPath.resolve(entry.getKey() + ".json").toFile())) {
-                gson.toJson(entry.getValue(), writer);
-                writer.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try (FileWriter writer = new FileWriter(directoryPath.resolve(key + ".json").toFile())) {
+            gson.toJson(item, writer);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    public void save() {
+        items.keySet().forEach(this::save);
     }
 
 }
