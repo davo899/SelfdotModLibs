@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 
 public class JsonUtils {
@@ -32,8 +33,8 @@ public class JsonUtils {
         return loadOrDefault(gson, filename, new TypeDef<>(clazz), fallback);
     }
 
-    public static <T> T loadOrDefault(Gson gson, String filename, TypeToken<T> typeToken, T fallback) {
-        return loadOrDefault(gson, filename, new TypeDef<>(typeToken), fallback);
+    public static <T> T loadOrDefault(Gson gson, String filename, Type type, T fallback) {
+        return loadOrDefault(gson, filename, new TypeDef<>(type), fallback);
     }
 
 }
