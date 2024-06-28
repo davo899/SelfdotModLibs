@@ -39,6 +39,10 @@ public class JsonRegistry<T> {
         }
     }
 
+    protected boolean validateKey(String key) {
+        return true;
+    }
+
     protected boolean validate(T item) {
         return true;
     }
@@ -65,7 +69,7 @@ public class JsonRegistry<T> {
 
             List<String> invalidItems = new ArrayList<>();
             for (String key : items.keySet()) {
-                if (!validate(items.get(key))) invalidItems.add(key);
+                if (!validateKey(key) || !validate(items.get(key))) invalidItems.add(key);
             }
             invalidItems.forEach(key -> {
                 log.error("Skipping invalid " + clazz.getSimpleName() + ": " + key);

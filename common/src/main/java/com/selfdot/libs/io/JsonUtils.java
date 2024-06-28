@@ -2,6 +2,7 @@ package com.selfdot.libs.io;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,9 +12,9 @@ import java.nio.charset.StandardCharsets;
 
 public class JsonUtils {
 
-    public static <T> T loadOrDefault(Gson gson, String filename, Class<T> clazz, T fallback) {
+    private static <T> T loadOrDefault(Gson gson, String filename, TypeDef<T> typeDef, T fallback) {
         try (FileReader reader = new FileReader(filename, StandardCharsets.UTF_8)) {
-            return gson.fromJson(reader, clazz);
+            return typeDef.fromJson(gson, reader);
         } catch (FileNotFoundException e) {
             try (FileWriter writer = new FileWriter(filename, StandardCharsets.UTF_8)) {
                 gson.toJson(fallback, writer);
@@ -25,6 +26,14 @@ public class JsonUtils {
             e.printStackTrace();
         }
         return fallback;
+    }
+
+    public static <T> T loadOrDefault(Gson gson, String filename, Class<T> clazz, T fallback) {
+        return loadOrDefault(gson, filename, new TypeDef<>(clazz), fallback);
+    }
+
+    public static <T> T loadOrDefault(Gson gson, String filename, TypeToken<T> typeToken, T fallback) {
+        return loadOrDefault(gson, filename, new TypeDef<>(typeToken), fallback);
     }
 
 }
