@@ -3,6 +3,7 @@ package com.selfdot.libs.io;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,21 +12,29 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 
+@Slf4j
 public class JsonUtils {
 
     private static <T> T loadOrDefault(Gson gson, String filename, TypeDef<T> typeDef, T fallback) {
         try (FileReader reader = new FileReader(filename, StandardCharsets.UTF_8)) {
-            return typeDef.fromJson(gson, reader);
+            T object = typeDef.fromJson(gson, reader);
+            log.info("Loaded " + filename);
+            return object;
         } catch (FileNotFoundException e) {
+            log.warn(filename + " not found");
             try (FileWriter writer = new FileWriter(filename, StandardCharsets.UTF_8)) {
                 gson.toJson(fallback, writer);
                 writer.flush();
+                log.warn("Generated default for " + filename);
             } catch (IOException e2) {
+                log.error("Could not generate default for " + filename);
                 e2.printStackTrace();
             }
         } catch (IOException | JsonSyntaxException e) {
+            log.error("Could not load " + filename);
             e.printStackTrace();
         }
+        log.warn("Using fallback object as substitute for " + filename);
         return fallback;
     }
 

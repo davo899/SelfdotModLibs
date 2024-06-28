@@ -22,7 +22,7 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
-    modApi "me.lucko:fabric-permissions-api:${rootProject.fabric_permissions_api_version}"
+    include(modApi "me.lucko:fabric-permissions-api:${rootProject.fabric_permissions_api_version}")
     modImplementation "com.cobblemon:fabric:${rootProject.cobblemon_version}+1.20.1"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
