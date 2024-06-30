@@ -16,11 +16,10 @@ configurations {
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
-    // Remove the next line if you don't want to depend on the API
-    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    forge "net.minecraftforge:forge:$project.forge_version"
+    modApi "dev.architectury:architectury-forge:$project.architectury_version"
 
-    modImplementation "com.cobblemon:forge:${rootProject.cobblemon_version}+1.20.1"
+    modImplementation "com.cobblemon:forge:$project.cobblemon_version+$project.minecraft_version"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
