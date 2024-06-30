@@ -18,7 +18,7 @@ configurations {
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:$project.fabric_loader_version"
-    modApi "net.fabricmc.fabric-api:fabric-api:$project.fabric_api_version"
+    modApi "net.fabricmc.fabric-api:fabric-api:$project.fabric_api_version+$project.minecraft_version"
     modApi "dev.architectury:architectury-fabric:$project.architectury_version"
 
     include(modApi "me.lucko:fabric-permissions-api:$project.fabric_permissions_api_version")

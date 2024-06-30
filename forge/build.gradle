@@ -16,7 +16,7 @@ configurations {
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:$project.forge_version"
+    forge "net.minecraftforge:forge:$project.minecraft_version-$project.forge_version"
     modApi "dev.architectury:architectury-forge:$project.architectury_version"
 
     modImplementation "com.cobblemon:forge:$project.cobblemon_version+$project.minecraft_version"
