@@ -13,6 +13,7 @@ public class PokemonElementBuilder extends ItemElementBuilder<PokemonElementBuil
 
     public PokemonElementBuilder(Species species, Set<String> aspects) {
         this.itemStack = speciesItem(species, aspects);
+        setCallback(() -> { });
     }
 
     public PokemonElementBuilder withName(String name) {
