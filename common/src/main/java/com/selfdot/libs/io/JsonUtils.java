@@ -27,7 +27,7 @@ public class JsonUtils {
     }
 
     private static <T> T loadOrDefault(Gson gson, String filename, TypeDef<T> typeDef, T fallback) {
-        createDirectories(Path.of(filename));
+        createDirectories(Path.of(filename).getParent());
         try (FileReader reader = new FileReader(filename, StandardCharsets.UTF_8)) {
             T object = typeDef.fromJson(gson, reader);
             log.info("Loaded " + filename);
