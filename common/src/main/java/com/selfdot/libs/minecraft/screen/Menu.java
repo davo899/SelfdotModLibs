@@ -21,7 +21,7 @@ public abstract class Menu {
     private final ScreenHandlerType<?> screenHandlerType;
     protected final ServerPlayerEntity player;
 
-    protected ViewFactory index;
+    protected ViewFactory index = guiBuilder -> { };
 
     protected abstract void buildViewFactories();
 
