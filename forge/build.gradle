@@ -2,9 +2,16 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'org.jetbrains.kotlin.jvm' version '1.9.0'
 }
+
 architectury {
     platformSetupLoomIde()
     forge()
+}
+
+loom {
+    forge {
+        mixinConfig("selfdotmodlibs.mixins.json")
+    }
 }
 
 configurations {
