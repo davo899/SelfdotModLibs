@@ -14,7 +14,7 @@ import java.util.Arrays;
 @Slf4j
 public abstract class CaughtCommand implements Command<ServerCommandSource> {
 
-    protected CaughtCommand(CommandDispatcher<ServerCommandSource> dispatcher) {
+    public CaughtCommand(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(node());
     }
 
