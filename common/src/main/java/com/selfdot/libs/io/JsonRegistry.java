@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.selfdot.libs.io.JsonUtils.createDirectories;
+
 @Slf4j
 public class JsonRegistry<T> {
 
@@ -30,15 +32,6 @@ public class JsonRegistry<T> {
         this.directoryPath = Paths.get(directoryPathString);
     }
 
-    private void createDirectories() {
-        try {
-            if (!Files.exists(directoryPath)) Files.createDirectories(directoryPath);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     protected boolean validateKey(String key) {
         return true;
     }
@@ -50,7 +43,7 @@ public class JsonRegistry<T> {
     public void load() {
         items.clear();
 
-        createDirectories();
+        createDirectories(directoryPath);
         try (Stream<Path> paths = Files.walk(directoryPath)) {
             paths.filter(Files::isRegularFile)
                 .filter(path -> path.toString().endsWith(".json"))
@@ -88,7 +81,7 @@ public class JsonRegistry<T> {
     public void save(String key) {
         T item = items.get(key);
         if (item == null) return;
-        createDirectories();
+        createDirectories(directoryPath);
         try (FileWriter writer = new FileWriter(directoryPath.resolve(key + ".json").toFile())) {
             gson.toJson(item, writer);
             writer.flush();

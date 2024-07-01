@@ -11,11 +11,23 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @Slf4j
 public class JsonUtils {
 
+    public static void createDirectories(Path path) {
+        try {
+            if (!Files.exists(path)) Files.createDirectories(path);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static <T> T loadOrDefault(Gson gson, String filename, TypeDef<T> typeDef, T fallback) {
+        createDirectories(Path.of(filename));
         try (FileReader reader = new FileReader(filename, StandardCharsets.UTF_8)) {
             T object = typeDef.fromJson(gson, reader);
             log.info("Loaded " + filename);
