@@ -1,8 +1,10 @@
 package com.selfdot.libs.minecraft;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import dev.architectury.event.events.common.CommandRegistrationEvent;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.command.ServerCommandSource;
 
@@ -10,6 +12,12 @@ import java.util.Arrays;
 
 @Slf4j
 public abstract class CaughtCommand implements Command<ServerCommandSource> {
+
+    protected CaughtCommand() {
+        CommandRegistrationEvent.EVENT.register((dispatcher, registry, selection) -> dispatcher.register(node()));
+    }
+
+    protected abstract LiteralArgumentBuilder<ServerCommandSource> node();
 
     protected abstract int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException;
 
