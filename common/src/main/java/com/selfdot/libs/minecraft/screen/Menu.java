@@ -21,9 +21,15 @@ public abstract class Menu {
     private final ScreenHandlerType<?> screenHandlerType;
     protected final ServerPlayerEntity player;
 
+    protected ViewFactory index;
+
+    protected abstract void buildViewFactories();
+
     public Menu(ScreenHandlerType<?> screenHandlerType, ServerPlayerEntity player) {
         this.screenHandlerType = screenHandlerType;
         this.player = player;
+        buildViewFactories();
+        openView(index);
     }
 
     protected <U> PagedViewFactory<U> pagedViewFactory(
