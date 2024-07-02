@@ -6,11 +6,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
+import net.minecraft.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ public class ItemStackBuilder {
     private boolean noAdditional = true;
     private final List<String> lore = new ArrayList<>();
     private PlayerEntity playerSkull = null;
+    private NbtCompound skullTag = null;
 
     protected ItemStackBuilder(ItemStack itemStack) {
         this.itemStack = itemStack;
@@ -39,6 +42,21 @@ public class ItemStackBuilder {
     public static ItemStackBuilder skullOf(PlayerEntity player) {
         ItemStackBuilder itemStackBuilder = itemStack(Items.PLAYER_HEAD);
         itemStackBuilder.playerSkull = player;
+        return itemStackBuilder;
+    }
+
+    public static ItemStackBuilder skull(String value) {
+        NbtCompound skullOwner = new NbtCompound();
+        NbtCompound properties = new NbtCompound();
+        NbtCompound valueData = new NbtCompound();
+        NbtList textures = new NbtList();
+        valueData.putString("Value", value);
+        textures.add(valueData);
+        properties.put("textures", textures);
+        skullOwner.put("Id", NbtHelper.fromUuid(Util.NIL_UUID));
+        skullOwner.put("Properties", properties);
+        ItemStackBuilder itemStackBuilder = itemStack(Items.PLAYER_HEAD);
+        itemStackBuilder.skullTag = skullOwner;
         return itemStackBuilder;
     }
 
@@ -79,6 +97,8 @@ public class ItemStackBuilder {
         }
         if (playerSkull != null) {
             itemStack.getOrCreateNbt().putString("SkullOwner", playerSkull.getGameProfile().getName());
+        } else if (skullTag != null) {
+            itemStack.getOrCreateNbt().put("SkullOwner", skullTag);
         }
         return itemStack;
     }
