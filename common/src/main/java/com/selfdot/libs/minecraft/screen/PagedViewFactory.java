@@ -3,6 +3,7 @@ package com.selfdot.libs.minecraft.screen;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementBuilderInterface;
 import eu.pb4.sgui.api.gui.SimpleGuiBuilder;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
 
 import java.util.List;
@@ -14,27 +15,27 @@ import static com.selfdot.libs.minecraft.screen.ScreenUtils.absolutePosition;
 import static com.selfdot.libs.minecraft.screen.ScreenUtils.relativePosition;
 import static net.minecraft.item.Items.ARROW;
 
-public class PagedViewFactory<U> implements ViewFactory {
+public class PagedViewFactory<U> extends ViewFactory {
 
     private int page = 0;
     private final Consumer<ViewFactory> viewOpener;
     private final Supplier<List<U>> elementsSupplier;
     private final Function<U, GuiElementBuilderInterface<?>> iconFactory;
     private final Consumer<U> onElementClick;
-    private final ViewFactory viewFactory;
 
     public PagedViewFactory(
+        ScreenHandlerType<?> screenHandlerType,
+        Consumer<SimpleGuiBuilder> create,
         Consumer<ViewFactory> viewOpener,
         Supplier<List<U>> elementsSupplier,
         Function<U, GuiElementBuilderInterface<?>> iconFactory,
-        Consumer<U> onElementClick,
-        ViewFactory viewFactory
+        Consumer<U> onElementClick
     ) {
+        super(screenHandlerType, create);
         this.viewOpener = viewOpener;
         this.elementsSupplier = elementsSupplier;
         this.iconFactory = iconFactory;
         this.onElementClick = onElementClick;
-        this.viewFactory = viewFactory;
     }
 
     private void movePage(int offset, int size, int elementsPerPage) {
@@ -46,7 +47,7 @@ public class PagedViewFactory<U> implements ViewFactory {
     }
 
     @Override
-    public void create(SimpleGuiBuilder guiBuilder) {
+    protected void build(SimpleGuiBuilder guiBuilder) {
         int elementsPerRow = guiBuilder.getWidth();
         int elementsPerPage = elementsPerRow * (guiBuilder.getHeight() - 2);
         List<U> elements = elementsSupplier.get();
@@ -71,7 +72,7 @@ public class PagedViewFactory<U> implements ViewFactory {
                 .setName(Text.literal("Next Page"))
                 .setCallback(() -> movePage(1, elements.size(), elementsPerPage))
         );
-        viewFactory.create(guiBuilder);
+        create.accept(guiBuilder);
     }
 
 }
