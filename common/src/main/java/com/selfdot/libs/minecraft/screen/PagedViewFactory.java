@@ -4,6 +4,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementBuilderInterface;
 import eu.pb4.sgui.api.gui.SimpleGuiBuilder;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 import java.util.List;
@@ -18,21 +19,21 @@ import static net.minecraft.item.Items.ARROW;
 public class PagedViewFactory<U> extends ViewFactory {
 
     private int page = 0;
-    private final Consumer<ViewFactory> viewOpener;
     private final Supplier<List<U>> elementsSupplier;
     private final Function<U, GuiElementBuilderInterface<?>> iconFactory;
     private final Consumer<U> onElementClick;
+    private final ServerPlayerEntity player;
 
     public PagedViewFactory(
         ScreenHandlerType<?> screenHandlerType,
         Consumer<SimpleGuiBuilder> create,
-        Consumer<ViewFactory> viewOpener,
+        ServerPlayerEntity player,
         Supplier<List<U>> elementsSupplier,
         Function<U, GuiElementBuilderInterface<?>> iconFactory,
         Consumer<U> onElementClick
     ) {
         super(screenHandlerType, create);
-        this.viewOpener = viewOpener;
+        this.player = player;
         this.elementsSupplier = elementsSupplier;
         this.iconFactory = iconFactory;
         this.onElementClick = onElementClick;
@@ -43,7 +44,7 @@ public class PagedViewFactory<U> extends ViewFactory {
         int pageCount = (size / elementsPerPage) + 1;
         while (page < 0) page += pageCount;
         while (page >= pageCount) page -= pageCount;
-        viewOpener.accept(this);
+        open(player);
     }
 
     @Override
