@@ -2,7 +2,6 @@ package com.selfdot.libs.io;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileNotFoundException;
@@ -26,36 +25,35 @@ public class JsonUtils {
         }
     }
 
-    private static <T> T loadOrDefault(Gson gson, String filename, TypeDef<T> typeDef, T fallback) {
+    private static <T> T loadWithDefault(Gson gson, String filename, TypeDef<T> typeDef, T default_) {
+        T object = default_;
         createDirectories(Path.of(filename).getParent());
         try (FileReader reader = new FileReader(filename, StandardCharsets.UTF_8)) {
-            T object = typeDef.fromJson(gson, reader);
+            object = typeDef.fromJson(gson, reader);
             log.info("Loaded " + filename);
-            return object;
         } catch (FileNotFoundException e) {
             log.warn(filename + " not found");
-            try (FileWriter writer = new FileWriter(filename, StandardCharsets.UTF_8)) {
-                gson.toJson(fallback, writer);
-                writer.flush();
-                log.warn("Generated default for " + filename);
-            } catch (IOException e2) {
-                log.error("Could not generate default for " + filename);
-                e2.printStackTrace();
-            }
         } catch (IOException | JsonSyntaxException e) {
             log.error("Could not load " + filename);
             e.printStackTrace();
         }
-        log.warn("Using fallback object as substitute for " + filename);
-        return fallback;
+        try (FileWriter writer = new FileWriter(filename, StandardCharsets.UTF_8)) {
+            gson.toJson(default_, writer);
+            writer.flush();
+        } catch (IOException e2) {
+            log.error("Could not save " + filename);
+            e2.printStackTrace();
+        }
+        if (object == default_) log.warn("Using default object as substitute for " + filename);
+        return object;
     }
 
-    public static <T> T loadOrDefault(Gson gson, String filename, Class<T> clazz, T fallback) {
-        return loadOrDefault(gson, filename, new TypeDef<>(clazz), fallback);
+    public static <T> T loadWithDefault(Gson gson, String filename, Class<T> clazz, T fallback) {
+        return loadWithDefault(gson, filename, new TypeDef<>(clazz), fallback);
     }
 
-    public static <T> T loadOrDefault(Gson gson, String filename, Type type, T fallback) {
-        return loadOrDefault(gson, filename, new TypeDef<>(type), fallback);
+    public static <T> T loadWithDefault(Gson gson, String filename, Type type, T fallback) {
+        return loadWithDefault(gson, filename, new TypeDef<>(type), fallback);
     }
 
 }
