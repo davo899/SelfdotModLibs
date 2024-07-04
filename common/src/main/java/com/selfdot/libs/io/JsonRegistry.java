@@ -45,6 +45,7 @@ public class JsonRegistry<T> {
 
         createDirectories(directoryPath);
         try (Stream<Path> paths = Files.walk(directoryPath)) {
+            List<String> invalidItems = new ArrayList<>();
             paths.filter(Files::isRegularFile)
                 .filter(path -> path.toString().endsWith(".json"))
                 .forEach(path -> {
@@ -56,11 +57,11 @@ public class JsonRegistry<T> {
                             gson.fromJson(reader, clazz)
                         );
                     } catch (IOException | JsonSyntaxException e) {
+                        invalidItems.add(path.getFileName().toString());
                         e.printStackTrace();
                     }
                 });
 
-            List<String> invalidItems = new ArrayList<>();
             for (String key : items.keySet()) {
                 if (!validateKey(key) || !validate(items.get(key))) invalidItems.add(key);
             }
