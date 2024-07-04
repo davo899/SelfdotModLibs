@@ -1,6 +1,7 @@
 package com.selfdot.libs.minecraft.screen;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
+import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.SimpleGuiBuilder;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -13,6 +14,7 @@ import static net.minecraft.util.Formatting.RED;
 public abstract class Menu {
 
     protected final ServerPlayerEntity player;
+    private SimpleGui gui;
 
     protected ViewFactory index = new ViewFactory(ScreenHandlerType.GENERIC_9X3, guiBuilder -> { });
 
@@ -25,7 +27,11 @@ public abstract class Menu {
     }
 
     protected void openView(ViewFactory viewFactory) {
-        viewFactory.open(player);
+        gui = viewFactory.open(player);
+    }
+
+    protected void close() {
+        if (gui != null) gui.close();
     }
 
     protected void returnsTo(SimpleGuiBuilder guiBuilder, ViewFactory viewFactory) {

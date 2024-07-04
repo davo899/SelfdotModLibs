@@ -1,5 +1,6 @@
 package com.selfdot.libs.minecraft.screen;
 
+import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.SimpleGuiBuilder;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -20,10 +21,12 @@ public class ViewFactory {
         create.accept(guiBuilder);
     }
 
-    public void open(ServerPlayerEntity player) {
+    public SimpleGui open(ServerPlayerEntity player) {
         SimpleGuiBuilder guiBuilder = new SimpleGuiBuilder(screenHandlerType, false);
         build(guiBuilder);
-        guiBuilder.build(player).open();
+        SimpleGui gui = guiBuilder.build(player);
+        gui.open();
+        return gui;
     }
 
 }
