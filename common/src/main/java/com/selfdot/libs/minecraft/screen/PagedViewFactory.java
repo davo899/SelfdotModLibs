@@ -44,7 +44,13 @@ public class PagedViewFactory<U> extends ViewFactory {
         int pageCount = (size / elementsPerPage) + 1;
         while (page < 0) page += pageCount;
         while (page >= pageCount) page -= pageCount;
-        open(player);
+        super.open(player);
+    }
+
+    @Override
+    public void open(ServerPlayerEntity player) {
+        page = 0;
+        super.open(player);
     }
 
     @Override
