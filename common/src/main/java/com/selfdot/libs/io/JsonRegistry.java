@@ -49,15 +49,13 @@ public class JsonRegistry<T> {
             paths.filter(Files::isRegularFile)
                 .filter(path -> path.toString().endsWith(".json"))
                 .forEach(path -> {
+                    String fileName = path.getFileName().toString();
+                    int dotIndex = fileName.lastIndexOf('.');
+                    String key = dotIndex == -1 ? fileName : fileName.substring(0, dotIndex);
                     try (FileReader reader = new FileReader(path.toFile(), StandardCharsets.UTF_8)) {
-                        String fileName = path.getFileName().toString();
-                        int dotIndex = fileName.lastIndexOf('.');
-                        items.put(
-                            dotIndex == -1 ? fileName : fileName.substring(0, dotIndex),
-                            gson.fromJson(reader, clazz)
-                        );
+                        items.put(key, gson.fromJson(reader, clazz));
                     } catch (IOException | JsonSyntaxException e) {
-                        invalidItems.add(path.getFileName().toString());
+                        invalidItems.add(key);
                         e.printStackTrace();
                     }
                 });
