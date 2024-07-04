@@ -27,6 +27,7 @@ public class JsonUtils {
 
     private static <T> T loadWithDefault(Gson gson, String filename, TypeDef<T> typeDef, T default_) {
         T object = default_;
+        boolean shouldSave = true;
         createDirectories(Path.of(filename).getParent());
         try (FileReader reader = new FileReader(filename, StandardCharsets.UTF_8)) {
             object = typeDef.fromJson(gson, reader);
@@ -34,15 +35,19 @@ public class JsonUtils {
         } catch (FileNotFoundException e) {
             log.warn(filename + " not found");
         } catch (IOException | JsonSyntaxException e) {
+            shouldSave = false;
             log.error("Could not load " + filename);
             e.printStackTrace();
         }
-        try (FileWriter writer = new FileWriter(filename, StandardCharsets.UTF_8)) {
-            gson.toJson(object, writer);
-            writer.flush();
-        } catch (IOException e2) {
-            log.error("Could not save " + filename);
-            e2.printStackTrace();
+        if (shouldSave) {
+            try (FileWriter writer = new FileWriter(filename, StandardCharsets.UTF_8)) {
+                gson.toJson(object, writer);
+                writer.flush();
+                log.error("Saved " + filename);
+            } catch (IOException e2) {
+                log.error("Could not save " + filename);
+                e2.printStackTrace();
+            }
         }
         if (object == default_) log.warn("Using default object as substitute for " + filename);
         return object;
