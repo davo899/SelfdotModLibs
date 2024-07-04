@@ -43,7 +43,7 @@ public class JsonUtils {
             try (FileWriter writer = new FileWriter(filename, StandardCharsets.UTF_8)) {
                 gson.toJson(object, writer);
                 writer.flush();
-                log.error("Saved " + filename);
+                log.info("Saved " + filename);
             } catch (IOException e2) {
                 log.error("Could not save " + filename);
                 e2.printStackTrace();
