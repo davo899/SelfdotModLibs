@@ -38,7 +38,7 @@ public class JsonUtils {
             e.printStackTrace();
         }
         try (FileWriter writer = new FileWriter(filename, StandardCharsets.UTF_8)) {
-            gson.toJson(default_, writer);
+            gson.toJson(object, writer);
             writer.flush();
         } catch (IOException e2) {
             log.error("Could not save " + filename);
