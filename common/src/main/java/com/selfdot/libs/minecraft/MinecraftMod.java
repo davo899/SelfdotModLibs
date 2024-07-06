@@ -1,20 +1,17 @@
 package com.selfdot.libs.minecraft;
 
-import com.mojang.brigadier.Command;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.selfdot.libs.minecraft.permissions.Permission;
-import com.selfdot.libs.minecraft.permissions.PermissionLevel;
+import com.selfdot.libs.minecraft.command.ReloadCommand;
 import com.selfdot.libs.minecraft.permissions.PermissionValidator;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
-
-import static com.selfdot.libs.minecraft.permissions.CommandRequirementBuilder.requirement;
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class MinecraftMod {
 
+    @Getter
     private final String modId;
     private final boolean withReload;
+    @Getter @Setter
     private PermissionValidator permissionValidator;
 
     public MinecraftMod(String modId, boolean withReload) {
@@ -26,34 +23,12 @@ public abstract class MinecraftMod {
         this(modId, true);
     }
 
-    public PermissionValidator getPermissionValidator() {
-        return permissionValidator;
-    }
-
-    public void setPermissionValidator(PermissionValidator permissionValidator) {
-        this.permissionValidator = permissionValidator;
-    }
-
     public void reload() { }
 
     public void onInitialize() {
         if (withReload) {
-            Permission reloadPermission = new Permission(
-                modId + ".reload", PermissionLevel.MULTIPLAYER_MANAGEMENT
-            );
-            CommandRegistrationEvent.EVENT.register((dispatcher, registryAccess, environment) ->
-                dispatcher.register(LiteralArgumentBuilder.<ServerCommandSource>
-                    literal("reload")
-                    .requires(requirement(this).needsPermission(reloadPermission).build())
-                    .then(LiteralArgumentBuilder.<ServerCommandSource>
-                        literal(modId)
-                        .executes(context -> {
-                            reload();
-                            context.getSource().sendMessage(Text.literal("Reloaded " + modId));
-                            return Command.SINGLE_SUCCESS;
-                        })
-                    )
-                )
+            CommandRegistrationEvent.EVENT.register(
+                (dispatcher, registryAccess, environment) -> new ReloadCommand(this, dispatcher)
             );
         }
     }

@@ -4,7 +4,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.List;
 
-import static com.selfdot.libs.minecraft.CommandExecutionBuilder.execute;
+import static com.selfdot.libs.minecraft.command.CommandExecutionBuilder.execute;
 
 public record Reward(String displayName, List<String> commandList) {
 

@@ -1,4 +1,4 @@
-package com.selfdot.libs.minecraft;
+package com.selfdot.libs.minecraft.command;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.selfdot.libs.minecraft.permissions.PermissionLevel;
