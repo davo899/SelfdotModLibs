@@ -1,7 +1,10 @@
 package com.selfdot.libs.fabric;
 
 import com.selfdot.libs.minecraft.MinecraftMod;
+import com.selfdot.libs.minecraft.task.TaskRunner;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 public abstract class FabricMod extends MinecraftMod implements ModInitializer {
 
@@ -12,6 +15,15 @@ public abstract class FabricMod extends MinecraftMod implements ModInitializer {
 
     public FabricMod(String modId) {
         this(modId, true);
+    }
+
+    @Override
+    public void onInitialize() {
+        super.onInitialize();
+        CommandRegistrationCallback.EVENT.register(
+            (dispatcher, registryAccess, environment) -> onRegisterCommands(dispatcher)
+        );
+        ServerTickEvents.START_SERVER_TICK.register(server -> TaskRunner.getInstance().onTick(server));
     }
 
 }

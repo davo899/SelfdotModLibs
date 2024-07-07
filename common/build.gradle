@@ -3,11 +3,8 @@ plugins {
 }
 
 dependencies {
-    // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
-    // Do NOT use other classes from fabric loader
     modImplementation "net.fabricmc:fabric-loader:$project.fabric_loader_version"
-    modApi "dev.architectury:architectury:$project.architectury_version"
-    modApi "com.cobblemon:mod:$project.cobblemon_version+$project.minecraft_version"
+    modCompileOnlyApi "com.cobblemon:mod:$project.cobblemon_version+$project.minecraft_version"
 
     compileOnly "org.projectlombok:lombok:$project.lombok_version"
     annotationProcessor "org.projectlombok:lombok:$project.lombok_version"

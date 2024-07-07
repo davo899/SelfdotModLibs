@@ -1,10 +1,11 @@
 package com.selfdot.libs.minecraft;
 
+import com.mojang.brigadier.CommandDispatcher;
 import com.selfdot.libs.minecraft.command.ReloadCommand;
 import com.selfdot.libs.minecraft.permissions.PermissionValidator;
-import dev.architectury.event.events.common.CommandRegistrationEvent;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.server.command.ServerCommandSource;
 
 public abstract class MinecraftMod {
 
@@ -25,12 +26,10 @@ public abstract class MinecraftMod {
 
     public void reload() { }
 
-    public void onInitialize() {
-        if (withReload) {
-            CommandRegistrationEvent.EVENT.register(
-                (dispatcher, registryAccess, environment) -> new ReloadCommand(this, dispatcher)
-            );
-        }
+    public void onInitialize() { }
+
+    public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
+        if (withReload) new ReloadCommand(this, dispatcher);
     }
 
 }

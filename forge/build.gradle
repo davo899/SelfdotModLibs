@@ -24,9 +24,8 @@ configurations {
 
 dependencies {
     forge "net.minecraftforge:forge:$project.minecraft_version-$project.forge_version"
-    modApi "dev.architectury:architectury-forge:$project.architectury_version"
 
-    modImplementation "com.cobblemon:forge:$project.cobblemon_version+$project.minecraft_version"
+    modCompileOnly "com.cobblemon:forge:$project.cobblemon_version+$project.minecraft_version"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }

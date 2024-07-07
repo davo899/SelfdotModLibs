@@ -5,7 +5,9 @@
 
   "name": "SelfdotModLibs",
   "description": "",
-  "authors": [],
+  "authors": [
+    "selfdot"
+  ],
   "contact": {},
 
   "license": "All Rights Reserved",
@@ -16,7 +18,7 @@
     "selfdotmodlibs.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.21",
-    "minecraft": ">=1.20.1"
+    "fabricloader": ">=0.15.11",
+    "minecraft": "1.20.1"
   }
 }

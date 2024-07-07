@@ -1,6 +1,6 @@
 package com.selfdot.libs.minecraft.task;
 
-import dev.architectury.event.events.common.TickEvent;
+import net.minecraft.server.MinecraftServer;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -18,11 +18,10 @@ public class TaskRunner {
 
     private final Queue<Task> taskQueue = new PriorityQueue<>(Comparator.comparingDouble(Task::tick));
     private int currentTick = 0;
-    {
-        TickEvent.SERVER_PRE.register(server -> {
-            while (!taskQueue.isEmpty() && taskQueue.peek().tick() <= currentTick) taskQueue.poll().task().run();
-            currentTick++;
-        });
+
+    public void onTick(MinecraftServer server) {
+        while (!taskQueue.isEmpty() && taskQueue.peek().tick() <= currentTick) taskQueue.poll().task().run();
+        currentTick++;
     }
 
     public void runLater(Runnable task, double ticks) {
