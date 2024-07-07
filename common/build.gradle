@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:$project.fabric_loader_version"
-    modCompileOnlyApi "com.cobblemon:mod:$project.cobblemon_version+$project.minecraft_version"
+    modCompileOnly "com.cobblemon:mod:$project.cobblemon_version+$project.minecraft_version"
 
     compileOnly "org.projectlombok:lombok:$project.lombok_version"
     annotationProcessor "org.projectlombok:lombok:$project.lombok_version"
