@@ -20,7 +20,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:$project.fabric_loader_version"
     modApi "net.fabricmc.fabric-api:fabric-api:$project.fabric_api_version+$project.minecraft_version"
 
-    include(modApi "me.lucko:fabric-permissions-api:$project.fabric_permissions_api_version")
+    include(modCompileOnly "me.lucko:fabric-permissions-api:$project.fabric_permissions_api_version")
     modCompileOnly "com.cobblemon:fabric:$project.cobblemon_version+$project.minecraft_version"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
