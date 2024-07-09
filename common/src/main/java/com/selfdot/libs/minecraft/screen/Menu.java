@@ -9,6 +9,7 @@ import net.minecraft.screen.ScreenTexts;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
+import static com.selfdot.libs.minecraft.screen.ItemStackBuilder.itemStack;
 import static com.selfdot.libs.minecraft.screen.ScreenUtils.relativePosition;
 import static net.minecraft.item.Items.BARRIER;
 import static net.minecraft.util.Formatting.RED;
@@ -49,13 +50,7 @@ public abstract class Menu {
 
     protected void fill(SimpleGuiBuilder guiBuilder, Item item) {
         for (int i = 0; i < guiBuilder.getSize(); i++) {
-            if (guiBuilder.getSlot(i) == null) {
-                guiBuilder.setSlot(
-                    i, new GuiElementBuilder()
-                        .setItem(item)
-                        .setName(ScreenTexts.EMPTY)
-                );
-            }
+            if (guiBuilder.getSlot(i) == null) guiBuilder.setSlot(i, itemStack(item).withName("").build());
         }
     }
 
