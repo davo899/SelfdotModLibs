@@ -1,6 +1,7 @@
 package com.selfdot.libs.io;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +23,7 @@ import static com.selfdot.libs.io.JsonUtils.createDirectories;
 @Slf4j
 public class JsonRegistry<T> {
 
-    protected Gson gson = new Gson();
+    protected GsonBuilder gsonBuilder = new GsonBuilder();
     private final Class<T> clazz;
     protected final String directoryPathString;
     private final Path directoryPath;
@@ -55,7 +56,7 @@ public class JsonRegistry<T> {
                     int dotIndex = fileName.lastIndexOf('.');
                     String key = dotIndex == -1 ? fileName : fileName.substring(0, dotIndex);
                     try (FileReader reader = new FileReader(path.toFile(), StandardCharsets.UTF_8)) {
-                        items.put(key, gson.fromJson(reader, clazz));
+                        items.put(key, gsonBuilder.create().fromJson(reader, clazz));
                     } catch (IOException | JsonSyntaxException e) {
                         invalidItems.add(key);
                         e.printStackTrace();
@@ -84,7 +85,7 @@ public class JsonRegistry<T> {
         if (item == null) return;
         createDirectories(directoryPath);
         try (FileWriter writer = new FileWriter(directoryPath.resolve(key + ".json").toFile())) {
-            gson.toJson(item, writer);
+            gsonBuilder.create().toJson(item, writer);
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();

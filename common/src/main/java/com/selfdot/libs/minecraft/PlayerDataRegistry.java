@@ -20,11 +20,10 @@ public class PlayerDataRegistry<T> extends JsonRegistry<T> {
     public PlayerDataRegistry(Class<T> clazz, Supplier<T> defaultSupplier, String path) {
         super(clazz, path);
         this.defaultSupplier = defaultSupplier;
-        this.gson = new GsonBuilder()
+        this.gsonBuilder = new GsonBuilder()
             .disableHtmlEscaping()
             .setPrettyPrinting()
-            .excludeFieldsWithoutExposeAnnotation()
-            .create();
+            .excludeFieldsWithoutExposeAnnotation();
     }
 
     public PlayerDataRegistry(Class<T> clazz, Supplier<T> defaultSupplier, MinecraftMod mod) {
@@ -50,7 +49,8 @@ public class PlayerDataRegistry<T> extends JsonRegistry<T> {
         if (playerData == null) {
             T defaultData = defaultSupplier.get();
             playerData = loadWithDefault(
-                gson, directoryPathString + playerId + ".json", defaultData.getClass(), defaultData
+                gsonBuilder.create(), directoryPathString + playerId + ".json",
+                defaultData.getClass(), defaultData
             );
             items.put(playerId, playerData);
         }
