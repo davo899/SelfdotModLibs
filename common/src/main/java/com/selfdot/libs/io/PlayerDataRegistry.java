@@ -1,8 +1,7 @@
-package com.selfdot.libs.minecraft;
+package com.selfdot.libs.io;
 
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.selfdot.libs.io.JsonRegistry;
+import com.selfdot.libs.minecraft.MinecraftMod;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -32,6 +31,11 @@ public class PlayerDataRegistry<T> extends JsonRegistry<T> {
 
     @Override
     public void load() { }
+
+    @Override
+    protected boolean validate(T item) {
+        return super.validate(item) && item != null;
+    }
 
     @Override
     protected boolean validateKey(String key) {
