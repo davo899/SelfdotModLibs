@@ -56,6 +56,7 @@ public class PlayerDataRegistry<T> extends JsonRegistry<T> {
                 gsonBuilder.create(), directoryPathString + playerId + ".json",
                 defaultData.getClass(), defaultData
             );
+            if (playerData == null) playerData = defaultData;
             items.put(playerId, playerData);
         }
         if (madeDirty.apply(playerData)) save(playerId);
