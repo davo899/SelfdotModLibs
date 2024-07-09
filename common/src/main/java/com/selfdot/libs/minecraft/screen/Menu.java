@@ -3,7 +3,9 @@ package com.selfdot.libs.minecraft.screen;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.SimpleGuiBuilder;
+import net.minecraft.item.Item;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.ScreenTexts;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
@@ -43,6 +45,18 @@ public abstract class Menu {
                 .setCallback(() -> openView(viewFactory))
                 .build()
         );
+    }
+
+    protected void fill(SimpleGuiBuilder guiBuilder, Item item) {
+        for (int i = 0; i < guiBuilder.getSize(); i++) {
+            if (guiBuilder.getSlot(i) == null) {
+                guiBuilder.setSlot(
+                    i, new GuiElementBuilder()
+                        .setItem(item)
+                        .setName(ScreenTexts.EMPTY)
+                );
+            }
+        }
     }
 
 }
