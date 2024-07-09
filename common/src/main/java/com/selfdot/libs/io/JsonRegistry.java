@@ -24,12 +24,14 @@ public class JsonRegistry<T> {
 
     protected Gson gson = new Gson();
     private final Class<T> clazz;
+    protected final String directoryPathString;
     private final Path directoryPath;
     protected final Map<String, T> items = new HashMap<>();
 
     public JsonRegistry(Class<T> clazz, String directoryPathString) {
         this.clazz = clazz;
         this.directoryPath = Paths.get(directoryPathString);
+        this.directoryPathString = directoryPathString;
     }
 
     protected boolean validateKey(String key) {
@@ -64,12 +66,12 @@ public class JsonRegistry<T> {
                 if (!validateKey(key) || !validate(items.get(key))) invalidItems.add(key);
             }
             invalidItems.forEach(key -> {
-                log.error("Skipping invalid " + clazz.getSimpleName() + ": " + key);
+                log.error("Skipping invalid {}: {}", clazz.getSimpleName(), key);
                 items.remove(key);
             });
             log.info(
-                "Finished loading " + clazz.getSimpleName() + " registry: " + items.size() +
-                " valid, " + invalidItems.size() + " invalid"
+                "Finished loading {} registry: {} valid, {} invalid",
+                clazz.getSimpleName(), items.size(), invalidItems.size()
             );
 
         } catch (IOException e) {
