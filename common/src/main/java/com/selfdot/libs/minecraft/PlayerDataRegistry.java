@@ -43,7 +43,8 @@ public class PlayerDataRegistry<T> extends JsonRegistry<T> {
         T playerData = items.get(playerId);
         if (playerData == null) {
             playerData = loadWithDefault(
-                gson, directoryPathString, new TypeToken<T>(){}.getType(), defaultSupplier.get()
+                gson, directoryPathString + playerId + ".json",
+                new TypeToken<T>(){}.getType(), defaultSupplier.get()
             );
             items.put(playerId, playerData);
         }
