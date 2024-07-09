@@ -1,5 +1,6 @@
-package com.selfdot.libs.minecraft.screen;
+package com.selfdot.libs.cobblemon;
 
+import com.selfdot.libs.minecraft.screen.ItemStackBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;

@@ -1,6 +1,8 @@
-package com.selfdot.libs.minecraft.screen;
+package com.selfdot.libs.cobblemon;
 
 import com.cobblemon.mod.common.pokemon.Species;
+import com.selfdot.libs.minecraft.screen.ItemElementBuilder;
+import com.selfdot.libs.minecraft.screen.ItemStackBuilder;
 import eu.pb4.sgui.api.elements.AnimatedGuiElement;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import net.minecraft.item.ItemStack;
