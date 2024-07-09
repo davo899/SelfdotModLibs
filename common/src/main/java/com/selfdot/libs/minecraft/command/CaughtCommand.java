@@ -16,7 +16,7 @@ import java.util.List;
 @Slf4j
 public abstract class CaughtCommand implements Command<ServerCommandSource> {
 
-    private final MinecraftMod mod;
+    protected final MinecraftMod mod;
     private final Permission permission;
 
     public CaughtCommand(

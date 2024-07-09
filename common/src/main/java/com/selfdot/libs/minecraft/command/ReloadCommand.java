@@ -11,21 +11,15 @@ import net.minecraft.text.Text;
 
 public class ReloadCommand extends CaughtCommand {
 
-    private final MinecraftMod mod;
-
     public ReloadCommand(MinecraftMod mod, CommandDispatcher<ServerCommandSource> dispatcher) {
         super(mod, dispatcher, "reload", new Permission(
             mod.getModId() + ".reload", PermissionLevel.MULTIPLAYER_MANAGEMENT
         ));
-        this.mod = mod;
     }
 
     @Override
     protected LiteralArgumentBuilder<ServerCommandSource> node(LiteralArgumentBuilder<ServerCommandSource> root) {
-        return root.then(LiteralArgumentBuilder.<ServerCommandSource>
-            literal(mod.getModId())
-            .executes(this::execute)
-        );
+        return root.then(LiteralArgumentBuilder.<ServerCommandSource>literal(mod.getModId()).executes(this::execute));
     }
 
     @Override
