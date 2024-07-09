@@ -23,7 +23,7 @@ import static com.selfdot.libs.io.JsonUtils.createDirectories;
 public class JsonRegistry<T> {
 
     protected Gson gson = new Gson();
-    private final Class<T> clazz;
+    protected final Class<T> clazz;
     protected final String directoryPathString;
     private final Path directoryPath;
     protected final Map<String, T> items = new HashMap<>();
