@@ -1,5 +1,6 @@
 package com.selfdot.libs.minecraft;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.selfdot.libs.io.JsonRegistry;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,11 @@ public class PlayerDataRegistry<T> extends JsonRegistry<T> {
     public PlayerDataRegistry(Class<T> clazz, Supplier<T> defaultSupplier, String path) {
         super(clazz, path);
         this.defaultSupplier = defaultSupplier;
+        this.gson = new GsonBuilder()
+            .disableHtmlEscaping()
+            .setPrettyPrinting()
+            .excludeFieldsWithoutExposeAnnotation()
+            .create();
     }
 
     public PlayerDataRegistry(Class<T> clazz, Supplier<T> defaultSupplier, MinecraftMod mod) {
@@ -42,8 +48,9 @@ public class PlayerDataRegistry<T> extends JsonRegistry<T> {
         String playerId = player.getUuidAsString();
         T playerData = items.get(playerId);
         if (playerData == null) {
+            T defaultData = defaultSupplier.get();
             playerData = loadWithDefault(
-                gson, directoryPathString + playerId + ".json", clazz, defaultSupplier.get()
+                gson, directoryPathString + playerId + ".json", defaultData.getClass(), defaultData
             );
             items.put(playerId, playerData);
         }
