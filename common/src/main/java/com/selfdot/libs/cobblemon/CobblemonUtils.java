@@ -22,6 +22,10 @@ import static net.minecraft.util.Formatting.*;
 
 public class CobblemonUtils {
 
+    public static boolean translationFailed(String result) {
+        return result.contains("cobblemon.");
+    }
+
     public static ItemStackBuilder speciesItem(Species species) {
         return speciesItem(species, Set.of());
     }
@@ -148,6 +152,9 @@ public class CobblemonUtils {
             .withLore(typeString(move.getType()))
             .withLore(damageCategory);
         if (!isStatus) itemStackBuilder.withLore(GOLD + "Power: " + (int)move.getPower());
+
+        String description = move.getDescription().getString();
+        if (!translationFailed(description)) itemStackBuilder.withLore(GRAY + description);
         return itemStackBuilder;
     }
 
