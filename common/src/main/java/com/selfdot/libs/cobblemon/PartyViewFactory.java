@@ -45,10 +45,10 @@ public class PartyViewFactory extends ViewFactory {
         }
         for (int i = 0; i < party.size(); i++) {
             Pokemon pokemon = party.get(i);
-            int x = 1 + i + (i / 3);
+            int position = absolutePosition(guiBuilder, 1 + i + (i / 3), 1);
             if (pokemon == null) {
                 guiBuilder.setSlot(
-                    absolutePosition(guiBuilder, x, 2),
+                    position,
                     new GuiElementBuilder()
                         .setItem(GLASS_PANE)
                         .setName(Text.literal(GRAY + "Empty"))
@@ -56,7 +56,7 @@ public class PartyViewFactory extends ViewFactory {
                 continue;
             }
             guiBuilder.setSlot(
-                absolutePosition(guiBuilder, x, 2),
+                position,
                 editItem.apply(pokemon, new PokemonElementBuilder(pokemon.getSpecies(), pokemon.getAspects()))
             );
         }
