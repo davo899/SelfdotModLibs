@@ -15,7 +15,7 @@ import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-import java.util.Set;
+import java.util.*;
 
 import static com.selfdot.libs.minecraft.screen.ItemStackBuilder.itemStack;
 import static net.minecraft.util.Formatting.*;
@@ -131,7 +131,11 @@ public class CobblemonUtils {
         return colour + type.getDisplayName().getString();
     }
 
+    private static final int MAX_LORE_LENGTH = 30;
     public static ItemStackBuilder moveItem(Move move) {
+        String displayName = move.getDisplayName().getString();
+        if (translationFailed(displayName)) return null;
+
         boolean isStatus = false;
         Item item;
         String damageCategory;
@@ -154,7 +158,22 @@ public class CobblemonUtils {
         if (!isStatus) itemStackBuilder.withLore(GOLD + "Power: " + (int)move.getPower());
 
         String description = move.getDescription().getString();
-        if (!translationFailed(description)) itemStackBuilder.withLore(GRAY + description);
+        if (!translationFailed(description)) {
+            Deque<String> words = new ArrayDeque<>(List.of(description.split(" ")));
+            if (!words.isEmpty()) {
+                StringBuilder stringBuilder = new StringBuilder(words.removeFirst());
+                while (!words.isEmpty()) {
+                    if (stringBuilder.length() >= MAX_LORE_LENGTH) {
+                        itemStackBuilder.withLore(GRAY + stringBuilder.toString());
+                        stringBuilder = new StringBuilder(words.removeFirst());
+                    } else {
+                        stringBuilder.append(" ");
+                        stringBuilder.append(words.removeFirst());
+                    }
+                }
+                itemStackBuilder.withLore(GRAY + stringBuilder.toString());
+            }
+        }
         return itemStackBuilder;
     }
 
