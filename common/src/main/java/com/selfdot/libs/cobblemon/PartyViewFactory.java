@@ -21,16 +21,13 @@ import static net.minecraft.util.Formatting.GRAY;
 public class PartyViewFactory extends ViewFactory {
 
     private final ServerPlayerEntity player;
-    private final Consumer<Pokemon> onClick;
     private final Consumer<ItemElementBuilder<?>> editItem;
 
     public PartyViewFactory(
-        ServerPlayerEntity player, Consumer<Pokemon> onClick,
-        Consumer<ItemElementBuilder<?>> editItem, Consumer<SimpleGuiBuilder> create
+        ServerPlayerEntity player, Consumer<ItemElementBuilder<?>> editItem, Consumer<SimpleGuiBuilder> create
     ) {
         super(ScreenHandlerType.GENERIC_9X3, create);
         this.player = player;
-        this.onClick = onClick;
         this.editItem = editItem;
     }
 
@@ -55,8 +52,7 @@ public class PartyViewFactory extends ViewFactory {
                 );
                 continue;
             }
-            ItemElementBuilder<?> item = new PokemonElementBuilder(pokemon.getSpecies(), pokemon.getAspects())
-                .setCallback(() -> onClick.accept(pokemon));
+            ItemElementBuilder<?> item = new PokemonElementBuilder(pokemon.getSpecies(), pokemon.getAspects());
             editItem.accept(item);
             guiBuilder.setSlot(absolutePosition(guiBuilder, x, 2), item);
         }
