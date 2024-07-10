@@ -50,7 +50,9 @@ public abstract class Menu {
 
     protected void fill(SimpleGuiBuilder guiBuilder, Item item) {
         for (int i = 0; i < guiBuilder.getSize(); i++) {
-            if (guiBuilder.getSlot(i) == null) guiBuilder.setSlot(i, itemStack(item).withName(" ").build());
+            if (guiBuilder.getSlot(i) == null) {
+                guiBuilder.setSlot(i, new ItemStackElementBuilder(itemStack(item)).withName(" "));
+            }
         }
     }
 
