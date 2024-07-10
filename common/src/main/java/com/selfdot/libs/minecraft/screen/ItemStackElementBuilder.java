@@ -10,18 +10,10 @@ import static com.selfdot.libs.minecraft.screen.ItemStackBuilder.itemStack;
 @Slf4j
 public class ItemStackElementBuilder extends ItemElementBuilder<ItemStackElementBuilder> {
 
-    protected ItemStackBuilder itemStackBuilder;
+    private final ItemStackBuilder itemStackBuilder;
 
-    public static ItemStackElementBuilder item(Item item) {
-        ItemStackElementBuilder itemStackElementBuilder = new ItemStackElementBuilder();
-        itemStackElementBuilder.itemStackBuilder = itemStack(item);
-        return itemStackElementBuilder;
-    }
-
-    public static ItemStackElementBuilder skull(String skull) {
-        ItemStackElementBuilder itemStackElementBuilder = new ItemStackElementBuilder();
-        itemStackElementBuilder.itemStackBuilder = ItemStackBuilder.skull(skull);
-        return itemStackElementBuilder;
+    public ItemStackElementBuilder(ItemStackBuilder itemStackBuilder) {
+        this.itemStackBuilder = itemStackBuilder;
     }
 
     @Override
