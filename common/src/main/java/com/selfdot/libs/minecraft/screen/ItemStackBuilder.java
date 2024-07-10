@@ -76,6 +76,7 @@ public class ItemStackBuilder {
     }
 
     public ItemStack build() {
+        itemStack.setCount(1);
         if (!name.isEmpty()) {
             itemStack.getOrCreateSubNbt("display")
                 .putString(
