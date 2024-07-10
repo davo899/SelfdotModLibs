@@ -5,7 +5,7 @@ import eu.pb4.sgui.api.elements.GuiElementInterface;
 
 public abstract class ItemElementBuilder<T extends GuiElementBuilderInterface<T>> implements GuiElementBuilderInterface<T> {
 
-    protected GuiElementInterface.ClickCallback callback;
+    protected GuiElementInterface.ClickCallback callback = (a, b, c, d) -> { };
 
     public abstract T withName(String name);
 
