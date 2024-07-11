@@ -17,20 +17,33 @@ import static net.minecraft.util.Formatting.RED;
 public abstract class Menu {
 
     protected final ServerPlayerEntity player;
+    private final Item backgroundItem;
     private SimpleGui gui;
 
     protected ViewFactory index = new ViewFactory(ScreenHandlerType.GENERIC_9X3, guiBuilder -> { });
 
     protected abstract void buildViewFactories();
 
-    public Menu(ServerPlayerEntity player) {
+    public Menu(ServerPlayerEntity player, Item backgroundItem) {
         this.player = player;
+        this.backgroundItem = backgroundItem;
         buildViewFactories();
         openView(index);
     }
 
+    public Menu(ServerPlayerEntity player) {
+        this(player, null);
+    }
+
     protected void openView(ViewFactory viewFactory) {
         gui = viewFactory.open(player);
+
+        if (backgroundItem == null) return;
+        for (int i = 0; i < gui.getSize(); i++) {
+            if (gui.getSlot(i) == null) {
+                gui.setSlot(i, new GuiElementBuilder().setItem(backgroundItem).setName(Text.literal(" ")));
+            }
+        }
     }
 
     protected void close() {
@@ -46,14 +59,6 @@ public abstract class Menu {
                 .setCallback(() -> openView(viewFactory))
                 .build()
         );
-    }
-
-    protected void fill(SimpleGuiBuilder guiBuilder, Item item) {
-        for (int i = 0; i < guiBuilder.getSize(); i++) {
-            if (guiBuilder.getSlot(i) == null) {
-                guiBuilder.setSlot(i, new GuiElementBuilder().setItem(item).setName(Text.literal(" ")));
-            }
-        }
     }
 
 }
