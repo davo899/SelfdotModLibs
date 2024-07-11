@@ -36,14 +36,8 @@ public abstract class Menu {
     }
 
     protected void openView(ViewFactory viewFactory) {
+        viewFactory.setBackgroundItem(backgroundItem);
         gui = viewFactory.open(player);
-
-        if (backgroundItem == null) return;
-        for (int i = 0; i < gui.getSize(); i++) {
-            if (gui.getSlot(i) == null) {
-                gui.setSlot(i, new GuiElementBuilder().setItem(backgroundItem).setName(Text.literal(" ")));
-            }
-        }
     }
 
     protected void close() {
