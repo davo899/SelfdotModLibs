@@ -15,6 +15,7 @@
   "environment": "*",
   "entrypoints": {},
   "mixins": [
+    "sgui.mixins.json",
     "selfdotmodlibs.mixins.json"
   ],
   "depends": {

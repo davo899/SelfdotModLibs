@@ -25,6 +25,9 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+
+    compileOnly "org.projectlombok:lombok:$project.lombok_version"
+    annotationProcessor "org.projectlombok:lombok:$project.lombok_version"
 }
 
 processResources {

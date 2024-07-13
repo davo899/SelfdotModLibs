@@ -10,6 +10,7 @@ architectury {
 
 loom {
     forge {
+        mixinConfig("sgui.mixins.json")
         mixinConfig("selfdotmodlibs.mixins.json")
     }
 }
@@ -29,6 +30,9 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+
+    compileOnly "org.projectlombok:lombok:$project.lombok_version"
+    annotationProcessor "org.projectlombok:lombok:$project.lombok_version"
 }
 
 processResources {

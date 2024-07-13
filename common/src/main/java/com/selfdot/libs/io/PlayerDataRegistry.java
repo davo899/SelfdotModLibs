@@ -2,8 +2,11 @@ package com.selfdot.libs.io;
 
 import com.google.gson.GsonBuilder;
 import com.selfdot.libs.minecraft.MinecraftMod;
+import com.selfdot.libs.minecraft.event.EventHandler;
+import com.selfdot.libs.minecraft.event.PlayerLeaveListener;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.UUID;
 import java.util.function.Function;
@@ -12,7 +15,7 @@ import java.util.function.Supplier;
 import static com.selfdot.libs.io.JsonUtils.loadWithDefault;
 
 @Slf4j
-public class PlayerDataRegistry<T> extends JsonRegistry<T> {
+public class PlayerDataRegistry<T> extends JsonRegistry<T> implements PlayerLeaveListener {
 
     private final Supplier<T> defaultSupplier;
 
@@ -23,6 +26,7 @@ public class PlayerDataRegistry<T> extends JsonRegistry<T> {
             .disableHtmlEscaping()
             .setPrettyPrinting()
             .excludeFieldsWithoutExposeAnnotation();
+        EventHandler.getInstance().addPlayerLeaveListener(this);
     }
 
     public PlayerDataRegistry(Class<T> clazz, Supplier<T> defaultSupplier, MinecraftMod mod) {
@@ -60,6 +64,11 @@ public class PlayerDataRegistry<T> extends JsonRegistry<T> {
             items.put(playerId, playerData);
         }
         if (madeDirty.apply(playerData)) save(playerId);
+    }
+
+    @Override
+    public void onPlayerLeave(ServerPlayerEntity player) {
+        items.remove(player.getUuidAsString());
     }
 
 }
