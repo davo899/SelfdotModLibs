@@ -5,8 +5,10 @@ import com.selfdot.libs.minecraft.command.ReloadCommand;
 import com.selfdot.libs.minecraft.permissions.PermissionValidator;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.command.ServerCommandSource;
 
+@Slf4j
 public abstract class MinecraftMod {
 
     @Getter
@@ -26,7 +28,9 @@ public abstract class MinecraftMod {
 
     public void reload() { }
 
-    public void onInitialize() { }
+    public void onInitialize() {
+        log.info("Initialising {}", modId);
+    }
 
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
         if (withReload) new ReloadCommand(this, dispatcher);
