@@ -17,6 +17,7 @@ import net.minecraft.util.Formatting;
 
 import java.util.*;
 
+import static com.cobblemon.mod.common.CobblemonItems.*;
 import static com.selfdot.libs.minecraft.screen.ItemStackBuilder.itemStack;
 import static net.minecraft.util.Formatting.*;
 
@@ -131,24 +132,42 @@ public class CobblemonUtils {
         return colour + type.getDisplayName().getString();
     }
 
+    public static Item typeGem(ElementalType type) {
+        if      (type.equals(ElementalTypes.INSTANCE.getGROUND()))   return GROUND_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getROCK()))     return ROCK_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getFIGHTING())) return FIGHTING_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getPOISON()))   return POISON_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getGHOST()))    return GHOST_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getDRAGON()))   return DRAGON_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getICE()))      return ICE_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getFLYING()))   return FLYING_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getGRASS()))    return GRASS_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getBUG()))      return BUG_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getFIRE()))     return FIRE_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getELECTRIC())) return ELECTRIC_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getPSYCHIC()))  return PSYCHIC_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getSTEEL()))    return STEEL_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getWATER()))    return WATER_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getDARK()))     return DARK_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getFAIRY()))    return FAIRY_GEM;
+        else if (type.equals(ElementalTypes.INSTANCE.getNORMAL()))   return STEEL_GEM;
+        return Items.DIAMOND;
+    }
+
     private static final int MAX_LORE_LENGTH = 30;
     public static ItemStackBuilder moveItem(Move move) {
         boolean isStatus = false;
-        Item item;
         String damageCategory;
         if (move.getDamageCategory().getName().equals(DamageCategories.INSTANCE.getPHYSICAL().getName())) {
-            item = Items.MUSIC_DISC_BLOCKS;
             damageCategory = Formatting.RED + "Physical";
         } else if (move.getDamageCategory().getName().equals(DamageCategories.INSTANCE.getSPECIAL().getName())) {
-            item = Items.MUSIC_DISC_MALL;
             damageCategory = Formatting.LIGHT_PURPLE + "Special";
         } else {
-            item = Items.MUSIC_DISC_STRAD;
             damageCategory = Formatting.GRAY + "Status";
             isStatus = true;
         }
 
-        ItemStackBuilder itemStackBuilder = itemStack(item)
+        ItemStackBuilder itemStackBuilder = itemStack(typeGem(move.getType()))
             .withName(move.getDisplayName().getString())
             .withLore(typeString(move.getType()))
             .withLore(damageCategory);
