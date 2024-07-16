@@ -133,9 +133,6 @@ public class CobblemonUtils {
 
     private static final int MAX_LORE_LENGTH = 30;
     public static ItemStackBuilder moveItem(Move move) {
-        String displayName = move.getDisplayName().getString();
-        if (translationFailed(displayName)) return null;
-
         boolean isStatus = false;
         Item item;
         String damageCategory;
