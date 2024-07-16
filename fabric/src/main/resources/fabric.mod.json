@@ -15,8 +15,8 @@
   "environment": "*",
   "entrypoints": {},
   "mixins": [
-    "sgui.mixins.json",
-    "selfdotmodlibs.mixins.json"
+    "selfdotmodlibs.mixins.json",
+    "selfdotmodlibs-sgui.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.15.11",

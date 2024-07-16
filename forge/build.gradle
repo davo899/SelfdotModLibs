@@ -10,8 +10,8 @@ architectury {
 
 loom {
     forge {
-        mixinConfig("sgui.mixins.json")
         mixinConfig("selfdotmodlibs.mixins.json")
+        mixinConfig("selfdotmodlibs-sgui.mixins.json")
     }
 }
 
