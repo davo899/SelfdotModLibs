@@ -34,9 +34,6 @@ public class PlayerDataRegistry<T> extends JsonRegistry<T> implements PlayerLeav
     }
 
     @Override
-    public void load() { }
-
-    @Override
     protected boolean validate(T item) {
         return super.validate(item) && item != null;
     }
