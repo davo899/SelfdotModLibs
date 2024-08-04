@@ -47,4 +47,6 @@ public class ViewFactory {
         return open(new SimpleGuiBuilder(screenHandlerType, false), player);
     }
 
+    public void reset() { }
+
 }

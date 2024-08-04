@@ -3,13 +3,12 @@ package com.selfdot.libs.minecraft.screen;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.SimpleGuiBuilder;
+import lombok.Setter;
 import net.minecraft.item.Item;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.ScreenTexts;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
-import static com.selfdot.libs.minecraft.screen.ItemStackBuilder.itemStack;
 import static com.selfdot.libs.minecraft.screen.ScreenUtils.relativePosition;
 import static net.minecraft.item.Items.BARRIER;
 import static net.minecraft.util.Formatting.RED;
@@ -35,9 +34,14 @@ public abstract class Menu {
         this(player, null);
     }
 
-    protected void openView(ViewFactory viewFactory) {
+    protected void openView(ViewFactory viewFactory, boolean shouldReset) {
+        if (shouldReset) viewFactory.reset();
         viewFactory.setBackgroundItem(backgroundItem);
         gui = viewFactory.open(player);
+    }
+
+    protected void openView(ViewFactory viewFactory) {
+        openView(viewFactory, true);
     }
 
     protected void close() {
@@ -50,7 +54,7 @@ public abstract class Menu {
             new GuiElementBuilder()
                 .setItem(BARRIER)
                 .setName(Text.literal(RED + "Back"))
-                .setCallback(() -> openView(viewFactory))
+                .setCallback(() -> openView(viewFactory, false))
                 .build()
         );
     }

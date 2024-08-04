@@ -2,7 +2,6 @@ package com.selfdot.libs.minecraft.screen;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementBuilderInterface;
-import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.SimpleGuiBuilder;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -49,12 +48,6 @@ public class PagedViewFactory<U> extends ViewFactory {
     }
 
     @Override
-    public SimpleGui open(ServerPlayerEntity player) {
-        page = 0;
-        return super.open(player);
-    }
-
-    @Override
     protected void build(SimpleGuiBuilder guiBuilder) {
         int elementsPerRow = guiBuilder.getWidth();
         int elementsPerPage = elementsPerRow * (guiBuilder.getHeight() - 2);
@@ -81,6 +74,12 @@ public class PagedViewFactory<U> extends ViewFactory {
                 .setCallback(() -> movePage(1, elements.size(), elementsPerPage))
         );
         create.accept(guiBuilder);
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        page = 0;
     }
 
 }
