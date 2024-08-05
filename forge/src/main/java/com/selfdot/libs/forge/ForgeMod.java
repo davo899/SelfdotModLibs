@@ -9,6 +9,7 @@ public abstract class ForgeMod extends MinecraftMod {
 
     public ForgeMod(String modId) {
         super(modId);
+        setPermissionValidator(new ForgePermissionValidator());
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
