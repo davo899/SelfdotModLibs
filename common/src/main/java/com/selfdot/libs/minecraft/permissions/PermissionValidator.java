@@ -6,4 +6,6 @@ public interface PermissionValidator {
 
     boolean hasPermission(CommandSource source, Permission permission);
 
+    void register(Permission permission);
+
 }

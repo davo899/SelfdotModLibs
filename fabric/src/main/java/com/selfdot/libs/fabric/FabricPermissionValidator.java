@@ -12,4 +12,7 @@ public class FabricPermissionValidator implements PermissionValidator {
         return Permissions.check(source, "selfdot." + permission.literal(), permission.level().ordinal());
     }
 
+    @Override
+    public void register(Permission permission) { }
+
 }

@@ -30,6 +30,7 @@ public abstract class CaughtCommand implements Command<ServerCommandSource> {
         roots.forEach(root -> dispatcher.register(node(
             LiteralArgumentBuilder.<ServerCommandSource>literal(root).requires(this::requirement)
         )));
+        mod.getPermissionValidator().register(permission);
     }
 
     public CaughtCommand(MinecraftMod mod, CommandDispatcher<ServerCommandSource> dispatcher, List<String> roots) {

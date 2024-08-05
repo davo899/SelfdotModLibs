@@ -43,7 +43,7 @@ public class CommandExecutionBuilder {
             source.getServer().getCommandManager().getDispatcher().execute(command, source);
 
         } catch (CommandSyntaxException e) {
-            log.error("Could not run: " + command);
+            log.error("Could not run: {}", command);
             log.error(e.getMessage());
             log.error(Arrays.toString(e.getStackTrace()));
         }
