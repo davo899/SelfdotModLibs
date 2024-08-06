@@ -48,8 +48,8 @@ public class PlayerDataRegistry<T> extends JsonRegistry<T> implements PlayerLeav
         return true;
     }
 
-    public void getOrCreate(PlayerEntity player, Function<T, Boolean> madeDirty) {
-        String playerId = player.getUuidAsString();
+    public void getOrCreate(UUID uuid, Function<T, Boolean> madeDirty) {
+        String playerId = uuid.toString();
         T playerData = items.get(playerId);
         if (playerData == null) {
             T defaultData = defaultSupplier.get();
@@ -61,6 +61,10 @@ public class PlayerDataRegistry<T> extends JsonRegistry<T> implements PlayerLeav
             items.put(playerId, playerData);
         }
         if (madeDirty.apply(playerData)) save(playerId);
+    }
+
+    public void getOrCreate(PlayerEntity player, Function<T, Boolean> madeDirty) {
+        getOrCreate(player.getUuid(), madeDirty);
     }
 
     @Override
