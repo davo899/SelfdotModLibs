@@ -41,7 +41,7 @@ public class PagedViewFactory<U> extends ViewFactory {
 
     private void movePage(int offset, int size, int elementsPerPage) {
         page += offset;
-        int pageCount = (Math.min(0, size - 1) / elementsPerPage) + 1;
+        int pageCount = (Math.max(0, size - 1) / elementsPerPage) + 1;
         while (page < 0) page += pageCount;
         while (page >= pageCount) page -= pageCount;
         super.open(player);
