@@ -1,6 +1,5 @@
 package com.selfdot.libs.minecraft.midi;
 
-import lombok.Setter;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,7 +21,7 @@ public class MidiPlayer {
     private long currentTickTime = 0;
     private double ticksPerMillisecond;
     private long microsecondsPerQuarterNote = 500000;
-    @Setter private double speedMultiplier = 1;
+    private long previousAdvanceMilliseconds = 0;
 
     private final Midi midi;
     private final ServerPlayerEntity player;
@@ -33,8 +32,13 @@ public class MidiPlayer {
         ticksPerMillisecond = midi.ticksPerQuarterNote() / (microsecondsPerQuarterNote / 1000.0);
     }
 
-    public void advance(long milliseconds) {
-        currentTickTime += (long) (milliseconds * speedMultiplier);
+    public void advance(double speedMultiplier) {
+        long nowMilliseconds = System.currentTimeMillis();
+        if (previousAdvanceMilliseconds > 0) {
+            currentTickTime += (long) ((nowMilliseconds - previousAdvanceMilliseconds) * speedMultiplier);
+        }
+        previousAdvanceMilliseconds = nowMilliseconds;
+
         while (!midi.events().isEmpty() && midi.events().peek().getTick() < currentTickTime * ticksPerMillisecond) {
             MidiEvent event = midi.events().poll();
             if (event == null) continue;
