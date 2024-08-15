@@ -109,7 +109,8 @@ public class MidiPlayer {
                     microsecondsPerQuarterNote = ((data[0] & 0xFF) << 16)
                         | ((data[1] & 0xFF) << 8)
                         | (data[2] & 0xFF);
-                    ticksPerMillisecond = midi.ticksPerQuarterNote() / (microsecondsPerQuarterNote / 1000.0);
+
+                    ticksPerMillisecond = midi.ticksPerQuarterNote() * (1000.0 / microsecondsPerQuarterNote);
                 }
             }
         }

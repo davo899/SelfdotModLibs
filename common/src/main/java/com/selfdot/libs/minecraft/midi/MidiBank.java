@@ -41,10 +41,7 @@ public class MidiBank {
 
         PriorityQueue<MidiEvent> eventPriorityQueue = new PriorityQueue<>(Comparator.comparingLong(MidiEvent::getTick));
         for (Track track : sequence.getTracks()) {
-            for (int i = 0; i < track.size(); i++) {
-                MidiEvent event = track.get(i);
-                eventPriorityQueue.offer(event);
-            }
+            for (int i = 0; i < track.size(); i++) eventPriorityQueue.add(track.get(i));
         }
         midis.put(id, new Midi(eventPriorityQueue, sequence.getResolution()));
     }
