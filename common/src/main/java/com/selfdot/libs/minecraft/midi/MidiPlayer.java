@@ -27,7 +27,7 @@ public class MidiPlayer {
     private final ServerPlayerEntity player;
 
     private void updateTempo() {
-        ticksPerMillisecond = midi.ticksPerQuarterNote() / (1000.0 / microsecondsPerQuarterNote);
+        ticksPerMillisecond = (midi.ticksPerQuarterNote() * 1000.0) / microsecondsPerQuarterNote;
     }
 
     public MidiPlayer(Midi midi, ServerPlayerEntity player) {
