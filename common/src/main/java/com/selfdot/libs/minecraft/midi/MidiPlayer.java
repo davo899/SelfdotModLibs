@@ -26,10 +26,14 @@ public class MidiPlayer {
     private final Midi midi;
     private final ServerPlayerEntity player;
 
+    private void updateTempo() {
+        ticksPerMillisecond = midi.ticksPerQuarterNote() / (1000.0 / microsecondsPerQuarterNote);
+    }
+
     public MidiPlayer(Midi midi, ServerPlayerEntity player) {
         this.midi = midi;
         this.player = player;
-        this.ticksPerMillisecond = midi.ticksPerQuarterNote() / (microsecondsPerQuarterNote / 1000.0);
+        updateTempo();
     }
 
     public void advance(double speedMultiplier) {
@@ -109,8 +113,7 @@ public class MidiPlayer {
                     microsecondsPerQuarterNote = ((data[0] & 0xFF) << 16)
                         | ((data[1] & 0xFF) << 8)
                         | (data[2] & 0xFF);
-
-                    ticksPerMillisecond = midi.ticksPerQuarterNote() * (1000.0 / microsecondsPerQuarterNote);
+                    updateTempo();
                 }
             }
         }
