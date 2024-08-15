@@ -55,4 +55,8 @@ public class MidiBank {
         return new MidiPlayer(new Midi(new ArrayDeque<>(midi.events()), midi.ticksPerQuarterNote()), player);
     }
 
+    public boolean contains(String midiId) {
+        return midis.containsKey(midiId);
+    }
+
 }
