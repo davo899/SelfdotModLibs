@@ -21,6 +21,7 @@ import net.minecraft.util.Formatting;
 import java.util.*;
 
 import static com.cobblemon.mod.common.CobblemonItems.*;
+import static com.selfdot.libs.Utils.textWrap;
 import static com.selfdot.libs.minecraft.screen.ItemStackBuilder.itemStack;
 import static net.minecraft.util.Formatting.*;
 
@@ -178,20 +179,7 @@ public class CobblemonUtils {
 
         String description = move.getDescription().getString();
         if (!translationFailed(description)) {
-            Deque<String> words = new ArrayDeque<>(List.of(description.split(" ")));
-            if (!words.isEmpty()) {
-                StringBuilder stringBuilder = new StringBuilder(words.removeFirst());
-                while (!words.isEmpty()) {
-                    if (stringBuilder.length() >= MAX_LORE_LENGTH) {
-                        itemStackBuilder.withLore(GRAY + stringBuilder.toString());
-                        stringBuilder = new StringBuilder(words.removeFirst());
-                    } else {
-                        stringBuilder.append(" ");
-                        stringBuilder.append(words.removeFirst());
-                    }
-                }
-                itemStackBuilder.withLore(GRAY + stringBuilder.toString());
-            }
+            textWrap(description, MAX_LORE_LENGTH).forEach(line -> itemStackBuilder.withLore(GRAY + line));
         }
         return itemStackBuilder;
     }
