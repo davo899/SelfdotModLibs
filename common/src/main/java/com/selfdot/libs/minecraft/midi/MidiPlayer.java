@@ -10,11 +10,14 @@ import net.minecraft.sound.SoundEvents;
 import javax.sound.midi.*;
 
 import java.util.List;
+import java.util.Random;
 import java.util.function.Supplier;
 
 import static javax.sound.midi.ShortMessage.NOTE_ON;
 
 public class MidiPlayer implements Receiver {
+
+    private static final Random RANDOM = new Random();
 
     private final Supplier<List<ServerPlayerEntity>> playerListSupplier;
 
@@ -77,7 +80,7 @@ public class MidiPlayer implements Receiver {
             player.getZ(),
             velocity / 127f,
             finalPitch,
-            player.getWorld().getRandom().nextLong()
+            RANDOM.nextLong()
         )));
     }
 
