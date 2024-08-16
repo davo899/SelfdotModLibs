@@ -9,6 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Supplier;
+
+import static javax.sound.midi.Sequencer.LOOP_CONTINUOUSLY;
 
 @Slf4j
 public class MidiBank {
@@ -18,7 +21,7 @@ public class MidiBank {
 
     private MidiBank() { }
 
-    private final Map<String, Midi> midis = new HashMap<>();
+    private final Map<String, Sequence> midis = new HashMap<>();
 
     public void load(Path path) {
         File file = path.toFile();
@@ -38,18 +41,28 @@ public class MidiBank {
         }
         String id = path.getFileName().toString();
         if (id.endsWith(".mid")) id = id.substring(0, id.length() - 4);
-
-        PriorityQueue<MidiEvent> eventPriorityQueue = new PriorityQueue<>(Comparator.comparingLong(MidiEvent::getTick));
-        for (Track track : sequence.getTracks()) {
-            for (int i = 0; i < track.size(); i++) eventPriorityQueue.add(track.get(i));
-        }
-        midis.put(id, new Midi(eventPriorityQueue, sequence.getResolution()));
+        midis.put(id, sequence);
     }
 
-    public MidiPlayer getNewPlayer(String midiId, ServerPlayerEntity player) {
-        if (!midis.containsKey(midiId)) return null;
-        Midi midi = midis.get(midiId);
-        return new MidiPlayer(new Midi(new ArrayDeque<>(midi.events()), midi.ticksPerQuarterNote()), player);
+    public Sequencer tryPlaySong(String midi, boolean looped, Supplier<List<ServerPlayerEntity>> playerListSupplier) {
+        if (!midis.containsKey(midi)) return null;
+        try {
+            Sequencer sequencer = MidiSystem.getSequencer(false);
+            sequencer.open();
+            sequencer.setSequence(midis.get(midi));
+            if (looped) {
+                sequencer.setLoopStartPoint(0);
+                sequencer.setLoopEndPoint(-1);
+                sequencer.setLoopCount(LOOP_CONTINUOUSLY);
+            }
+            sequencer.getTransmitter().setReceiver(new MidiPlayer(playerListSupplier));
+            sequencer.start();
+            return sequencer;
+
+        } catch (MidiUnavailableException | InvalidMidiDataException e) {
+            e.printStackTrace(System.err);
+            return null;
+        }
     }
 
     public boolean contains(String midiId) {
