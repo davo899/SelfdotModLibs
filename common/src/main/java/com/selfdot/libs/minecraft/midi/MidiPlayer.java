@@ -7,8 +7,9 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 
-import javax.sound.midi.*;
-
+import javax.sound.midi.MidiMessage;
+import javax.sound.midi.Receiver;
+import javax.sound.midi.ShortMessage;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -70,7 +71,6 @@ public class MidiPlayer implements Receiver {
 
             pitch = (float) Math.pow(2f, (inOctaveKey - 12f) / 12f);
         }
-
         float finalPitch = pitch;
         playerListSupplier.get().forEach(player -> player.networkHandler.sendPacket(new PlaySoundS2CPacket(
             RegistryEntry.of(soundEvent),

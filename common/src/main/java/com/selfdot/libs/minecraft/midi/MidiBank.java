@@ -1,7 +1,12 @@
 package com.selfdot.libs.minecraft.midi;
 
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import javax.sound.midi.*;
@@ -9,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 import static javax.sound.midi.Sequencer.LOOP_CONTINUOUSLY;
@@ -67,6 +73,13 @@ public class MidiBank {
 
     public boolean contains(String midiId) {
         return midis.containsKey(midiId);
+    }
+
+    public CompletableFuture<Suggestions> suggestSongs(
+        final CommandContext<ServerCommandSource> context, final SuggestionsBuilder builder
+    ) {
+        midis.keySet().forEach(builder::suggest);
+        return builder.buildFuture();
     }
 
 }
