@@ -10,6 +10,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.List;
 
+@Deprecated(forRemoval = true)
 public abstract class PlayerExecutedCommand extends CaughtCommand {
 
     public PlayerExecutedCommand(

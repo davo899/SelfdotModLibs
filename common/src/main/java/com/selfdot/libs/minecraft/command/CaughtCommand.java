@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
+@Deprecated(forRemoval = true)
 public abstract class CaughtCommand implements Command<ServerCommandSource> {
 
     protected final MinecraftMod mod;

@@ -1,6 +1,5 @@
 package com.selfdot.libs.minecraft.command;
 
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.selfdot.libs.minecraft.MinecraftMod;
@@ -9,10 +8,11 @@ import com.selfdot.libs.minecraft.permissions.PermissionLevel;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
-public class ReloadCommand extends CaughtCommand {
+public class ReloadCommand extends ServerCommand {
 
-    public ReloadCommand(MinecraftMod mod, CommandDispatcher<ServerCommandSource> dispatcher) {
-        super(mod, dispatcher, "reload", new Permission(
+    public ReloadCommand(MinecraftMod mod) {
+        super(mod, "reload");
+        setPermission(new Permission(
             mod.getModId() + ".reload", PermissionLevel.MULTIPLAYER_MANAGEMENT
         ));
     }

@@ -33,7 +33,7 @@ public abstract class MinecraftMod {
     }
 
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (withReload) new ReloadCommand(this, dispatcher);
+        if (withReload) new ReloadCommand(this).register(dispatcher);
     }
 
 }
