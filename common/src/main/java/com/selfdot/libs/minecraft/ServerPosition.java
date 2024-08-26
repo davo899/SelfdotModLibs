@@ -7,17 +7,19 @@ import net.minecraft.util.Identifier;
 
 public record ServerPosition(int x, int y, int z, Identifier dimension) {
 
-    public boolean teleportPlayer(ServerPlayerEntity player, float yaw, float pitch) {
-        if (player == null) return false;
-        MinecraftServer server = player.getServer();
-        if (server == null) return false;
+    public ServerWorld world(MinecraftServer server) {
+        if (server == null) return null;
         for (ServerWorld world : server.getWorlds()) {
-            if (world.getRegistryKey().getValue().equals(dimension)) {
-                player.teleport(world, x, y, z, 0, 0);
-                return true;
-            }
+            if (world.getRegistryKey().getValue().equals(dimension)) return world;
         }
-        return false;
+        return null;
+    }
+
+    public boolean teleportPlayer(ServerPlayerEntity player, float yaw, float pitch) {
+        ServerWorld world = world(player.getServer());
+        if (world == null) return false;
+        player.teleport(world, x, y, z, yaw, pitch);
+        return true;
     }
 
     public boolean teleportPlayer(ServerPlayerEntity player) {
