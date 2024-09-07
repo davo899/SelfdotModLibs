@@ -1,5 +1,6 @@
 package com.selfdot.libs.minecraft;
 
+import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.server.MinecraftServer;
@@ -10,10 +11,10 @@ import net.minecraft.util.Identifier;
 @Getter @Setter
 public class ServerPosition {
 
-    private int x;
-    private int y;
-    private int z;
-    private Identifier dimension;
+    @Expose private int x;
+    @Expose private int y;
+    @Expose private int z;
+    @Expose private Identifier dimension;
 
     public ServerPosition(int x, int y, int z, Identifier dimension) {
         this.x = x;
