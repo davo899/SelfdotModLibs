@@ -1,11 +1,48 @@
 package com.selfdot.libs.minecraft;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 
-public record ServerPosition(int x, int y, int z, Identifier dimension) {
+@Getter @Setter
+public class ServerPosition {
+
+    private int x;
+    private int y;
+    private int z;
+    private Identifier dimension;
+
+    public ServerPosition(int x, int y, int z, Identifier dimension) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.dimension = dimension;
+    }
+
+    public ServerPosition() { }
+
+    @Deprecated(forRemoval = true)
+    public int x() {
+        return x;
+    }
+
+    @Deprecated(forRemoval = true)
+    public int y() {
+        return y;
+    }
+
+    @Deprecated(forRemoval = true)
+    public int z() {
+        return z;
+    }
+
+    @Deprecated(forRemoval = true)
+    public Identifier dimension() {
+        return dimension;
+    }
 
     public ServerWorld world(MinecraftServer server) {
         if (server == null) return null;
