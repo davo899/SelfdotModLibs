@@ -7,6 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.selfdot.libs.minecraft.MinecraftMod;
 import com.selfdot.libs.minecraft.permissions.Permission;
+import com.selfdot.libs.minecraft.permissions.PermissionValidator;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.command.ServerCommandSource;
@@ -20,13 +21,9 @@ import java.util.List;
 @Slf4j
 public abstract class ServerCommand implements Command<ServerCommandSource> {
 
-    protected abstract LiteralArgumentBuilder<ServerCommandSource> node(
-        LiteralArgumentBuilder<ServerCommandSource> root
-    );
-
     protected abstract int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException;
 
-    protected final MinecraftMod mod;
+    private final PermissionValidator permissionValidator;
     private final List<String> roots = new ArrayList<>();
     private Permission permission;
     @Setter
@@ -34,19 +31,27 @@ public abstract class ServerCommand implements Command<ServerCommandSource> {
 
     protected ServerPlayerEntity player;
 
-    public ServerCommand(@NotNull MinecraftMod mod, @NotNull String root) {
-        this.mod = mod;
+    public ServerCommand(@NotNull PermissionValidator permissionValidator, @NotNull String root) {
+        this.permissionValidator = permissionValidator;
         roots.add(root);
+    }
+
+    public ServerCommand(@NotNull MinecraftMod mod, @NotNull String root) {
+        this(mod.getPermissionValidator(), root);
     }
 
     public void setPermission(Permission permission) {
         this.permission = permission;
-        mod.getPermissionValidator().register(permission);
+        permissionValidator.register(permission);
     }
 
     protected boolean requirement(ServerCommandSource source) {
-        return (permission == null || mod.getPermissionValidator().hasPermission(source, permission)) &&
+        return (permission == null || permissionValidator.hasPermission(source, permission)) &&
             (!requiresPlayer || source.isExecutedByPlayer());
+    }
+
+    protected LiteralArgumentBuilder<ServerCommandSource> node(LiteralArgumentBuilder<ServerCommandSource> root) {
+        return root.executes(this);
     }
 
     public void register(CommandDispatcher<ServerCommandSource> dispatcher) {

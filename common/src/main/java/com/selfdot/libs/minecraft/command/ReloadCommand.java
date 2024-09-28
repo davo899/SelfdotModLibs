@@ -10,8 +10,11 @@ import net.minecraft.text.Text;
 
 public class ReloadCommand extends ServerCommand {
 
+    private final MinecraftMod mod;
+
     public ReloadCommand(MinecraftMod mod) {
         super(mod, "reload");
+        this.mod = mod;
         setPermission(new Permission(
             mod.getModId() + ".reload", PermissionLevel.MULTIPLAYER_MANAGEMENT
         ));

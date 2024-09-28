@@ -1,6 +1,7 @@
 package com.selfdot.libs.minecraft;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.selfdot.libs.SelfdotModLibs;
 import com.selfdot.libs.minecraft.command.ReloadCommand;
 import com.selfdot.libs.minecraft.permissions.PermissionValidator;
 import lombok.Getter;
@@ -33,6 +34,7 @@ public abstract class MinecraftMod {
     }
 
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
+        SelfdotModLibs.getInstance().registerCommands(permissionValidator, dispatcher);
         if (withReload) new ReloadCommand(this).register(dispatcher);
     }
 
