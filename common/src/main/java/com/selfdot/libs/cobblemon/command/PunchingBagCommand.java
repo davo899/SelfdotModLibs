@@ -10,6 +10,8 @@ import com.cobblemon.mod.common.pokemon.Species;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.selfdot.libs.minecraft.command.ServerCommand;
+import com.selfdot.libs.minecraft.permissions.Permission;
+import com.selfdot.libs.minecraft.permissions.PermissionLevel;
 import com.selfdot.libs.minecraft.permissions.PermissionValidator;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -21,6 +23,7 @@ public class PunchingBagCommand extends ServerCommand {
     public PunchingBagCommand(@NotNull PermissionValidator permissionValidator) {
         super(permissionValidator, "punchingbag");
         setRequiresPlayer(true);
+        setPermission(new Permission("selfdotmodlibs.punchingbag", PermissionLevel.CHEAT_COMMANDS_AND_COMMAND_BLOCKS));
     }
 
     @Override
