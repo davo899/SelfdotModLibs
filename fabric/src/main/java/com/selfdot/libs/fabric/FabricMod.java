@@ -19,11 +19,11 @@ public abstract class FabricMod extends MinecraftMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        SelfdotModLibsFabric.getInstance().initialise();
         super.onInitialize();
         CommandRegistrationCallback.EVENT.register(
             (dispatcher, registryAccess, environment) -> onRegisterCommands(dispatcher)
         );
-        ServerTickEvents.START_SERVER_TICK.register(server -> TaskRunner.getInstance().onTick(server));
     }
 
 }

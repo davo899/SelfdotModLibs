@@ -13,7 +13,11 @@
   "license": "All Rights Reserved",
 
   "environment": "*",
-  "entrypoints": {},
+  "entrypoints": {
+    "fabric-gametest": [
+      "com.selfdot.libs.fabric.test.SelfdotModLibsFabricTest"
+    ]
+  },
   "mixins": [
     "selfdotmodlibs.mixins.json",
     "selfdotmodlibs-sgui.mixins.json"

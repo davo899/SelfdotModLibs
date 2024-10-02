@@ -9,6 +9,7 @@ public abstract class ForgeMod extends MinecraftMod {
 
     public ForgeMod(String modId) {
         super(modId);
+        SelfdotModLibsForge.getInstance().initialise();
         setPermissionValidator(new ForgePermissionValidator());
     }
 

@@ -3,6 +3,16 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.9.0'
 }
 
+loom {
+    runs {
+        gameTest {
+            server()
+            vmArg "-Dfabric-api.gametest=1"
+            runDir "test-run"
+        }
+    }
+}
+
 architectury {
     platformSetupLoomIde()
     fabric()
@@ -20,7 +30,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:$project.fabric_loader_version"
     modApi "net.fabricmc.fabric-api:fabric-api:$project.fabric_api_version+$project.minecraft_version"
 
-    include(modApi "me.lucko:fabric-permissions-api:$project.fabric_permissions_api_version")
+    include(modCompileOnly("me.lucko:fabric-permissions-api:$project.fabric_permissions_api_version"))
     modCompileOnly "com.cobblemon:fabric:$project.cobblemon_version+$project.minecraft_version"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }

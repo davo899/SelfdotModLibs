@@ -12,9 +12,9 @@ public class SelfdotModLibs {
     public static final String MOD_ID = "selfdotmodlibs";
 
     @Getter
-    private static final SelfdotModLibs instance = new SelfdotModLibs();
+    protected static SelfdotModLibs instance;
 
-    private SelfdotModLibs() { }
+    protected SelfdotModLibs() { }
 
     private boolean commandsRegistered = false;
 
